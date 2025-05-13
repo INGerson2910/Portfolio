@@ -10,45 +10,60 @@
 
   <style>
   body {
-    background: #8992A1;
-    color: #2a2a2a;
+    background-color: #8992A1;
+    color: #f4f4f4;
     font-family: 'Inter', sans-serif;
     line-height: 1.7;
   }
-  .subtitle {
-    color: #666;
-  } 
-  h1, h2 {
-    color: #1e1e1e;
+
+  h1, h2, h3 {
+    color: #ffffff;
     font-weight: 700;
   }
+
   a {
-    color: #0056b3;
-  }
-  a:hover {
-    color: #003d80;
+    color: #FFDD57; /* dorado pastel */
+    text-decoration: none;
   }
 
-  footer {
+  a:hover {
+    color: #ffe88f;
+    text-decoration: underline;
+  }
+
+  .subtitle {
+    color: #e0e0e0;
+  }
+
+  .section {
+    background-color: #7a8291;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+
+  .navbar, .footer {
+    background-color: #70798b;
+    color: #ffffff;
+  }
+
+  .footer {
     text-align: center;
-    margin-top: 3rem;
+    padding: 1rem;
     font-size: 0.9rem;
-    color: #888;
+    color: #ddd;
   }
-  #scrollTopBtn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #66d9ef;
-    color: black;
+
+  .btn-primary {
+    background-color: #FFDD57;
     border: none;
-    border-radius: 50%;
-    padding: 10px 15px;
-    cursor: pointer;
-    display: none;
-    z-index: 99;
+    color: #1e1e1e;
   }
-  </style>
+
+  .btn-primary:hover {
+    background-color: #ffe88f;
+  }
+</style>
 </head>
 <body>
 
@@ -100,7 +115,7 @@
     </section>
 
     <!-- PROJECTS -->
-    <section id="projects" class="mb-5">
+    <section id="projects" class="mb-5" style="background-color: #8992A1;">
       <h2>Projects</h2>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
@@ -120,7 +135,7 @@
         height: 270px;
       }
     </style>
-    <section id="certifications" class="mb-5" style="background-color: #f5f5f5; border-radius: 8px; padding: 2rem;">
+    <section id="certifications" class="mb-5" style="background-color: #8992A1; border-radius: 8px; padding: 2rem;">
   <h2 class="text-dark">Certifications</h2>
 
   <div class="row">
