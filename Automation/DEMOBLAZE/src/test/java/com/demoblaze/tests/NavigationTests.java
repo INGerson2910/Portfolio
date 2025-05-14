@@ -1,18 +1,30 @@
 package com.demoblaze.tests;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
+import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Epic("Demoblaze")
+@Feature("Navegación")
+@Story("Navegación de productos")
+@Severity(SeverityLevel.CRITICAL)
+@Listeners({AllureTestNg.class})
 public class NavigationTests extends BaseTest {
-    @Test(description = "Caso 7 - Validar que el sitio muestre las categorías 'Laptops', 'Phones' y 'Monitors'")
+    @Test(description = "CP07 - Validar que el sitio muestre las categorías 'Laptops', 'Phones' y 'Monitors'")
     public void testCategoriasVisibles() {
         NavigationPage navigationPage = new NavigationPage(driver);
 
@@ -23,7 +35,7 @@ public class NavigationTests extends BaseTest {
         Assert.assertTrue(categorias.contains("Monitors"), "X La categoría 'Monitors' no está visible.");
     }
 
-    @Test(description = "Caso 8 - Validar que al seleccionar una categoría solo se muestren productos de esa categoría")
+    @Test(description = "CP08 - Validar que al seleccionar una categoría solo se muestren productos de esa categoría")
     public void testSoloProductosDeCategoriaPhones() {
         NavigationPage navigationPage = new NavigationPage(driver);
         navigationPage.clickCategory("Phones");
@@ -54,7 +66,7 @@ public class NavigationTests extends BaseTest {
     }
 
 
-    @Test(description = "Caso 9 - Verificar que cada producto muestre imagen, nombre y precio")
+    @Test(description = "CP09 - Verificar que cada producto muestre imagen, nombre y precio")
     public void testInformacionVisiblePorProducto() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 

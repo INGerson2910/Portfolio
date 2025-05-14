@@ -1,11 +1,23 @@
 package com.demoblaze.tests;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
+import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+@Epic("Demoblaze")
+@Feature("Página de detalle")
+@Story("Detalle de productos")
+@Severity(SeverityLevel.CRITICAL)
+@Listeners({AllureTestNg.class})
 public class ProductDetailTests extends BaseTest{
     @Test(description = "CP12 - Verificar que al seleccionar un producto se muestre su nombre, descripción, precio e imagen ampliada.")
     public void testDetalleProductoVisible(){
@@ -27,7 +39,7 @@ public class ProductDetailTests extends BaseTest{
         Assert.assertTrue(imagenVisible, "X La imagen del producto no se muestra.");
     }
 
-    @Test(description = "Validar que la página de detalle incluya el botón 'Add to cart'.")
+    @Test(description = "CP13 - Validar que la página de detalle incluya el botón 'Add to cart'.")
     public void testBotonAddToCartVisible(){
         NavigationPage navigationPage = new NavigationPage(driver);
         navigationPage.clickOnProductByName("Samsung galaxy s6");
