@@ -17,23 +17,21 @@ public class CartPage {
         this.driver = driver;
     }
 
-    public boolean isProductInCart(String productName){
+    public boolean isProductInCart(String productName) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        try{
-            WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("tbodyid")));
 
-            List<WebElement> rows = table.findElements(By.tagName("tr"));
-            for(WebElement row : rows){
-                if(row.getText().contains(productName)){
-                    return true;
-                }
-            }
-            return false;
-        }
-        catch(TimeoutException e){
-            return false;
+        try {
+            // Esperar hasta que el producto esté presente en el carrito
+            return wait.until(driver -> {
+                List<WebElement> productos = driver.findElements(By.cssSelector("#tbodyid .success td:nth-child(2)"));
+                return productos.stream()
+                        .anyMatch(e -> e.getText().trim().equalsIgnoreCase(productName));
+            });
+        } catch (TimeoutException e) {
+            return false; // No se encontró el producto a tiempo
         }
     }
+
 
     public String getPriceOfProduct(String productName){
         List<WebElement> filas = driver.findElements(By.cssSelector("tr.success"));
