@@ -91,7 +91,7 @@ public class NavigationPage {
                         ));
                     }
                 } else {
-                    throw new NoSuchElementException("❌ Producto '" + productName + "' no encontrado en ninguna página.");
+                    throw new NoSuchElementException("X Producto '" + productName + "' no encontrado en ninguna página.");
                 }
             }
         }

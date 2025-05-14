@@ -68,4 +68,32 @@ public class CartTests extends BaseTest{
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         Assert.assertTrue(cartPage.isProductInCart("Sony vaio i7"), "El producto no se encuentra en el carrito.");
     }
+
+    @Test(description = "CP17 - Validar que el carrito muestre el nombre, precio y cantidad de los productos añadidos.")
+    public void testValidarCantidadEnCarrito() {
+        NavigationPage navigationPage = new NavigationPage(driver);
+        ProductDetailPage productDetailPage = new ProductDetailPage(driver);
+        CartPage cartPage = new CartPage(driver);
+
+        String producto = "Nexus 6";
+        String precio = "650";
+
+        // Agregar el mismo producto dos veces
+        navigationPage.clickOnProductByName(producto);
+        productDetailPage.clickAddToCart();
+
+        WebElement linkToHome = wait.until(ExpectedConditions.elementToBeClickable(By.id("nava")));
+        linkToHome.click();
+
+        navigationPage.clickOnProductByName(producto);
+        productDetailPage.clickAddToCart();
+
+        navigationPage.goToCart();
+
+        // Validar que se muestra cantidad 2 para el producto (esto debería fallar si no hay columna "Cantidad")
+        Assert.assertTrue(cartPage.validateProductDetails(producto, precio, 2),
+                "X No se muestra la cantidad correcta (2) para el producto añadido dos veces.");
+    }
+
+
 }

@@ -58,4 +58,20 @@ public class CartPage {
     public boolean isCartEmpty(){
         return driver.findElements(By.cssSelector("tr.success")).isEmpty();
     }
+
+    public boolean validateProductDetails(String productName, String price, int expectedQuantity){
+        List<WebElement> rows = driver.findElements(By.cssSelector("#tbodyid > tr"));
+        int counter = 0;
+
+        for(WebElement row : rows){
+            String productText = row.findElement(By.xpath("./td[2]")).getText().trim();
+            String priceText = row.findElement(By.xpath("./td[3]")).getText().trim();
+
+            if(productText.equals(productName) && priceText.equals(price)){
+                counter ++;
+            }
+        }
+        return counter == expectedQuantity;
+    }
+
 }

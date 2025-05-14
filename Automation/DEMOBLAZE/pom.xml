@@ -65,8 +65,9 @@
                         <include>**/*Tests.java</include>
                     </includes>
                     <systemPropertyVariables>
-                        <allure.results.directory>allure-results</allure.results.directory>
+                        <allure.results.directory>target/allure-results</allure.results.directory>
                     </systemPropertyVariables>
+
                 </configuration>
             </plugin>
         </plugins>
