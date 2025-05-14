@@ -1,116 +1,254 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi Portafolio - Ing. Gerson Medina</title>
+  <title>My Portfolio - Ing. Gerson Medina</title>
+  <link rel="icon" href="/favicon_io/favicon.ico" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f9f9f9;
-      color: #333;
-      padding: 2rem;
-      line-height: 1.6;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.2rem;
-    }
-    p.subtitle {
-      color: #777;
-      font-size: 1.1rem;
-    }
-    section {
-      max-width: 700px;
-      margin: 0 auto;
-    }
-    h2 {
-      border-bottom: 2px solid #ddd;
-      padding-bottom: 0.3rem;
-    }
-    ul {
-      list-style: none;
-      padding-left: 0;
-    }
-    li {
-      margin-bottom: 0.8rem;
-    }
-    a {
-      color: #0077cc;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    footer {
-      text-align: center;
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: #aaa;
-    }
-  </style>
+  body {
+    background-color: #8992A1;
+    color: #f4f4f4;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.7;
+  }
+
+  h1,h3 {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+
+  a {
+    color: #FFDD57; /* dorado pastel */
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #ffe88f;
+    text-decoration: underline;
+  }
+
+  .subtitle {
+    color: #e0e0e0;
+  }
+
+  .section {
+    background-color: #7a8291;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+
+  .navbar, .footer {
+    background-color: #70798b;
+    color: #ffffff;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #ddd;
+  }
+
+  .btn-primary {
+    background-color: #FFDD57;
+    border: none;
+    color: #1e1e1e;
+  }
+
+  .btn-primary:hover {
+    background-color: #ffe88f;
+  }
+</style>
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZT078ZQ0GJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZT078ZQ0GJ');
+</script>
 <body>
-  <header>
-    <h1>Ing. Gerson</h1>
-    <p class="subtitle">QA Engineer | Scrum Master | ISTQB Certified</p>
-  </header>
 
-  <section>
-    <!--<h2>🔗 Proyectos</h2>
-    <ul>
-      <li><a href="https://github.com/tuusuario/proyecto1" target="_blank">Proyecto 1 - Automatización con Selenium</a></li>
-      <li><a href="https://github.com/tuusuario/proyecto2" target="_blank">Proyecto 2 - API Testing con Postman</a></li>
-    </ul>
-  -->
-    <h2>🎓 Certifications and credentials</h2>
-    <ul>
-      <li><a href="https://www.credly.com/users/gerson-levi-medina-conde" target="_blank">Certifications</a></li>
-    </ul>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top border-bottom border-secondary">
+    <div class="container">
+      <a class="navbar-brand" href="#">Gerson Medina</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#certifications">Certifications</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-    <!--<h2>📚 Cursos Online (próximamente)</h2>
-    <ul>
-      <li>Curso de Automatización QA (próximamente)</li>
-    </ul>
-  -->
-  </section>
+  <div class="container py-5 mt-5">
+    <header class="text-center mb-5">
+      <h1>Ing. Gerson Medina</h1>
+      <p class="subtitle">QA Engineer | Scrum Master | ISTQB Certified</p>
+      <img src="PXL_20230626_173721558.jpg" alt="Gerson Medina profile photo" class="img-fluid rounded shadow mt-3 mb-4">
 
-  <footer>
-        <h2>📬 Contact me</h2>
-    <ul>
-      <li>
-        <a href="mailto:gelemc2910@gmail.com" aria-label="E-mail">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#444" viewBox="0 0 24 24" style="vertical-align: middle;">
-            <path d="M12 13.065L0 6V18C0 19.104 0.896 20 2 20H22C23.104 
-              20 24 19.104 24 18V6L12 13.065ZM12 11L24 4H0L12 11Z"/>
-          </svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://www.linkedin.com/in/ingerson2910/" target="_blank" aria-label="LinkedIn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#0077B5" viewBox="0 0 24 24" style="vertical-align: middle;">
-            <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 
-            5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.27c-.97 
-            0-1.75-.79-1.75-1.76 0-.97.78-1.75 1.75-1.75s1.75.78 
-            1.75 1.75c0 .97-.78 1.76-1.75 1.76zm13.5 
-            11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 
-            0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.36h.04c.4-.76 
-            1.37-1.56 2.82-1.56 3.01 0 3.57 1.98 3.57 
-            4.56v5.64z"/>
-          </svg>
-        </a>
-    </li>
+    </header>
 
-    </ul>
-  </section>
+    <!-- ABOUT -->
+    <section id="about" class="mb-5">
+      <h2>About Me</h2>
+      <p>
+        I'm a QA Engineer with over 3 years of experience in functional testing.
+        I've contributed to large-scale QA initiatives for leading retail and
+        supply chain platforms in Latin America, collaborating with cross-functional
+        and international teams to ensure the quality of high-impact applications
+        used by millions of daily users.
+      </p>
+      <p>
+        I'm used to help improve software quality. I also have knowledge and practice
+        on Scrum, and I am familiar with Java and SQL.
+      </p>
+      <p>
+        I'm passionate about continuous learning, and value teamwork, and solving challenges.
+        I consider myself self-taught and enjoy developing some projects on my own. 
+        I like to be cautious and to be prepared for any unforeseen situation.
+      </p>
+    </section>
 
-  <footer>
+    <!-- PROJECTS -->
+    <section id="projects" class="mb-5" style="background-color: #8992A1;">
+      <h2>Projects</h2>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item border-0" style="background-color: transparent;">
+        <a href="https://github.com/INGerson2910/Portfolio/tree/main/Automation" target="_blank">
+            Web Test Automation – Framework using Selenium, Java, and TestNG. Includes Allure reports.
+          </a>
+        </li>
+      </ul>
+    </section>
 
-  </footer>
+    <!-- CERTIFICATIONS -->
+    <style>
+      .credly-badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 270px;
+      }
+    </style>
+    <section id="certifications" class="mb-5" style="background-color: #8992A1; border-radius: 8px; padding: 2rem;">
+  <h2>Certifications</h2>
+
+  <div class="row">
+    <div class="col-md-4 mb-4 credly-badge">
+      <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="35607efb-4867-40e7-95f3-4593fca95cf0" data-share-badge-host="https://www.credly.com"></div>
+    </div>
+    <div class="col-md-4 mb-4 credly-badge">
+      <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="15a2e4ba-770b-41e6-bf65-9929394b1d5b" data-share-badge-host="https://www.credly.com"></div>
+    </div>
+    <div class="col-md-4 mb-4 credly-badge">
+      <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="30338b4d-93ca-4811-928b-c4ce4cc43aa0" data-share-badge-host="https://www.credly.com"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 mb-4 credly-badge">
+      <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="8e232e25-4fc4-42e0-818d-037877663160" data-share-badge-host="https://www.credly.com"></div>
+    </div>
+    <div class="col-md-4 mb-4 credly-badge">
+      <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="351f713c-ff96-4012-af0e-a124894b3fe4" data-share-badge-host="https://www.credly.com"></div>
+    </div>
+    <div class="col-md-4 mb-4 credly-badge">
+      <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="0badc9f2-f4cd-4d16-a063-63c9496189a9" data-share-badge-host="https://www.credly.com"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 mb-4 credly-badge">
+      <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="8372d7d4-c2e9-4a64-93a1-ce22909671fa" data-share-badge-host="https://www.credly.com"></div>
+    </div>
+    <div class="col-md-4 mb-4 credly-badge">
+      <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="feb75594-172b-456d-85c3-7b6e39ff9dff" data-share-badge-host="https://www.credly.com"></div>
+    </div>
+    <div class="col-md-4 mb-4 text-center">
+      <a href="https://app.exeed.pro/holder/badge/73154" target="_blank" style="text-decoration: none;">
+        <img src="badge73154.png" alt="EXIN Ethical Hacking Foundation Badge" class="img-fluid mb-2" style="max-height: 150px;">
+        <p class="fw-bold text-dark">EXIN Ethical Hacking Foundation</p>
+        <p class="text-muted">Issued by EXIN · Nov 26, 2020</p>
+      </a>
+    </div>
+  </div>
+
+  <script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>
+</section>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="mb-5">
+      <h2>Contact</h2>
+      <ul>
+        <li>
+          <a href="mailto:gelemc2910@gmail.com">
+            <img src="https://img.icons8.com/ios-glyphs/24/66d9ef/new-post.png"/> gelemc2910@gmail.com
+          </a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/ingerson2910/" target="_blank">
+            <img src="https://img.icons8.com/ios-filled/24/66d9ef/linkedin.png"/> LinkedIn – ingerson2910
+          </a>
+        </li>
+      </ul>
+
+      <!-- CONTACT FORM -->
+      <form action="https://formspree.io/f/mblozwww" method="POST" class="mt-4">
+        <div class="mb-3">
+          <label for="name" class="form-label">Your Name</label>
+          <input type="text" name="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Your Email</label>
+          <input type="email" name="_replyto" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Message</label>
+          <textarea name="message" class="form-control" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </section>
+
+    <footer>
+      &copy; 2025 Ing. Gerson Medina – All rights reserved.
+    </footer>
+  </div>
+
+  <!-- SCROLL TOP BUTTON -->
+  <button id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">&#8679;</button>
+
+  <!-- BOOTSTRAP & SCROLL SCRIPT -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    window.onscroll = function () {
+      scrollTopBtn.style.display = window.scrollY > 300 ? "block" : "none";
+    };
+  </script>
 </body>
 </html>
