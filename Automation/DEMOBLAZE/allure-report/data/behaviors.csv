@@ -1,2 +1,10 @@
 "BROKEN","EPIC","FAILED","FEATURE","PASSED","SKIPPED","STORY","UNKNOWN"
+<<<<<<< HEAD
 "1","","2","","3","0","","0"
+=======
+"0","Demoblaze","0","Navegación","5","0","Navegación de productos","0"
+"0","Demoblaze","0","Carrito","3","0","Gestión del carrito","0"
+"0","Demoblaze","1","Login","2","0","Inicio de sesión","0"
+"1","Demoblaze","1","Login","1","0","Registro de usuario","0"
+"0","Demoblaze","0","Página de detalle","2","0","Detalle de productos","0"
+>>>>>>> 493a0b89dea3b45ef22e1a3cfc174f054a1c2d0d

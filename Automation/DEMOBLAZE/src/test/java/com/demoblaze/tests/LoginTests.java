@@ -1,16 +1,28 @@
 package com.demoblaze.tests;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
+import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-
+@Epic("Demoblaze")
+@Feature("Login")
+@Story("Inicio de sesión")
+@Severity(SeverityLevel.CRITICAL)
+@Listeners({AllureTestNg.class})
 public class LoginTests extends BaseTest {
-    @Test
+
+    @Test(description = "CP04 - Validar que el inicio de sesión funcione con credenciales correctas.")
     public void testLoginExitoso() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.openLoginForm();
@@ -19,7 +31,7 @@ public class LoginTests extends BaseTest {
         Assert.assertTrue(loginPage.isLoginSuccessful(), "El usuario no pudo iniciar sesión con credenciales válidas.");
     }
 
-    @Test
+    @Test(description = "CP05 - Validar que se muestre un mensaje de error al iniciar sesión con credenciales incorrectas.")
     public void testLoginConCredencialesIncorrectas() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.openLoginForm();
@@ -38,7 +50,7 @@ public class LoginTests extends BaseTest {
 
     }
 
-    @Test
+    @Test(description = "CP06 - Validar que el usuario sea bloqueado después de cinco intentos fallidos de inicio de sesión.")
     public void testBloqueoTrasCincoIntentosFallidos() {
         LoginPage loginPage = new LoginPage(driver);
         boolean fueBloqueado = false;

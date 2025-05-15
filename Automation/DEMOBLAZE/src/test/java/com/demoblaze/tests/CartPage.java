@@ -17,23 +17,21 @@ public class CartPage {
         this.driver = driver;
     }
 
-    public boolean isProductInCart(String productName){
+    public boolean isProductInCart(String productName) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        try{
-            WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("tbodyid")));
 
-            List<WebElement> rows = table.findElements(By.tagName("tr"));
-            for(WebElement row : rows){
-                if(row.getText().contains(productName)){
-                    return true;
-                }
-            }
-            return false;
-        }
-        catch(TimeoutException e){
-            return false;
+        try {
+            // Esperar hasta que el producto esté presente en el carrito
+            return wait.until(driver -> {
+                List<WebElement> productos = driver.findElements(By.cssSelector("#tbodyid .success td:nth-child(2)"));
+                return productos.stream()
+                        .anyMatch(e -> e.getText().trim().equalsIgnoreCase(productName));
+            });
+        } catch (TimeoutException e) {
+            return false; // No se encontró el producto a tiempo
         }
     }
+
 
     public String getPriceOfProduct(String productName){
         List<WebElement> filas = driver.findElements(By.cssSelector("tr.success"));
@@ -60,4 +58,20 @@ public class CartPage {
     public boolean isCartEmpty(){
         return driver.findElements(By.cssSelector("tr.success")).isEmpty();
     }
+
+    public boolean validateProductDetails(String productName, String price, int expectedQuantity){
+        List<WebElement> rows = driver.findElements(By.cssSelector("#tbodyid > tr"));
+        int counter = 0;
+
+        for(WebElement row : rows){
+            String productText = row.findElement(By.xpath("./td[2]")).getText().trim();
+            String priceText = row.findElement(By.xpath("./td[3]")).getText().trim();
+
+            if(productText.equals(productName) && priceText.equals(price)){
+                counter ++;
+            }
+        }
+        return counter == expectedQuantity;
+    }
+
 }
