@@ -5,18 +5,17 @@
 :root {
   --cobalt: #0047AB;
   --yellow: #FFC300;
-  --light-bg: #F7F9FC;
-  --dark-text: #1C1C1C;
   --light-text: #ffffff;
 }
 
+
 /* Global Styles */
 body {
-  background-color: var(--light-bg);
+  background-color: var(--cobalt);
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  color: var(--dark-text);
+  color: var(--light-text);
   scroll-behavior: smooth;
 }
 
@@ -140,6 +139,13 @@ a:hover {
   padding-left: 0;
 }
 
+#contact {
+  background-color: var(--cobalt);
+  color: var(--light-text);
+  padding: 3rem 1rem;
+}
+
+
 #contact li {
   margin-bottom: 1rem;
 }
@@ -147,6 +153,21 @@ a:hover {
 #contact img {
   margin-right: 0.5rem;
 }
+
+#contact input,
+#contact textarea {
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+#contact input::placeholder,
+#contact textarea::placeholder {
+  color: #666666;
+}
+
 
 /* Scroll Button */
 #scrollTopBtn {
@@ -170,9 +191,75 @@ a:hover {
   background-color: #ffe666;
 }
 
-.project-card img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  display: block;
+.project-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  padding: 1rem;
 }
+
+.project-box {
+  background-color: var(--cobalt);
+  border-radius: 10px;
+  width: 150px;
+  height: 200px;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.project-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px 4px rgba(255, 255, 255, 0.3);
+  filter: brightness(1.2); /* efecto brillo */
+}
+
+.project-thumb {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.project-title {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.cert-gallery.cert-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  padding: 1rem;
+}
+
+.cert-box {
+  background-color: var(--cobalt);
+  border-radius: 10px;
+  width: 150px;
+  height: 270px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cert-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px 4px rgba(255, 255, 255, 0.3);
+  filter: brightness(1.2);
+}
+
