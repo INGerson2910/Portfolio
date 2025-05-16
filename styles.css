@@ -1,34 +1,22 @@
-/* Importar fuente */
+
+/* Inter Font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
 :root {
   --cobalt: #0047AB;
   --yellow: #FFC300;
-  --text-dark: #1C1C1C;
-  --text-light: #EFEFEF;
-  --bg-light: #F7F9FC;
+  --light-bg: #F7F9FC;
+  --dark-text: #1C1C1C;
+  --light-text: #ffffff;
 }
 
-/* ANIMACIONES */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* GLOBAL */
+/* Global Styles */
 body {
-  background-color: var(--bg-light);
-  color: var(--text-dark);
+  background-color: var(--light-bg);
   font-family: 'Inter', sans-serif;
-  line-height: 1.7;
   margin: 0;
   padding: 0;
+  color: var(--dark-text);
   scroll-behavior: smooth;
 }
 
@@ -37,34 +25,28 @@ h1, h2, h3 {
   color: var(--cobalt);
 }
 
+.subtitle {
+  color: var(--dark-text);
+}
+
 a {
   color: var(--cobalt);
   text-decoration: none;
-  transition: color 0.3s;
 }
 
 a:hover {
   color: var(--yellow);
-  text-decoration: underline;
-}
-
-.subtitle {
-  color: var(--text-dark);
-  font-size: 1.1rem;
 }
 
 .section {
-  background-color: #e6ecf7;
   padding: 2rem;
   border-radius: 8px;
   margin-bottom: 2rem;
-  animation: fadeInUp 1s ease forwards;
 }
 
-/* NAVBAR & FOOTER */
 .navbar, .footer {
   background-color: var(--cobalt) !important;
-  color: #ffffff;
+  color: var(--light-text);
 }
 
 .navbar-brand, .nav-link {
@@ -75,40 +57,76 @@ a:hover {
   color: var(--yellow) !important;
 }
 
-.footer {
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.9rem;
-  color: #ddd;
-}
-
-/* BOTONES */
 .btn-primary {
   background-color: var(--yellow);
   border: none;
-  color: var(--text-dark);
-  transition: background-color 0.3s;
+  color: var(--dark-text);
 }
 
 .btn-primary:hover {
   background-color: #ffe666;
 }
 
-/* IMAGEN PERFIL */
-header img {
-  max-width: 180px;
-  border-radius: 50%;
-  box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
+/* Project Section Redesigned */
+#projects {
+  background-color: var(--cobalt);
+  color: var(--light-text);
+  padding: 3rem 1rem;
+  border-radius: 10px;
 }
 
-/* LISTA DE PROYECTOS */
-.list-group-item {
+.filter-buttons {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.filter-buttons .filter {
   background-color: transparent;
-  border: none;
-  padding-left: 0;
+  border: 2px solid var(--yellow);
+  color: var(--yellow);
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-/* CERTIFICATIONS */
+.filter-buttons .filter:hover,
+.filter-buttons .filter.active {
+  background-color: var(--yellow);
+  color: var(--cobalt);
+}
+
+.project-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  background-color: #ffffff;
+  color: #1c1c1c;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+}
+
+.project-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.project-info {
+  padding: 1rem;
+}
+
+/* Credly Badge */
 .credly-badge {
   display: flex;
   justify-content: center;
@@ -116,10 +134,10 @@ header img {
   height: 270px;
 }
 
-/* CONTACTO */
+/* Contact */
 #contact ul {
   list-style: none;
-  padding: 0;
+  padding-left: 0;
 }
 
 #contact li {
@@ -130,24 +148,13 @@ header img {
   margin-right: 0.5rem;
 }
 
-/* FORMULARIO */
-form .form-label {
-  color: var(--text-dark);
-}
-
-form input,
-form textarea {
-  background-color: #ffffff;
-  color: var(--text-dark);
-}
-
-/* SCROLL TOP BUTTON */
+/* Scroll Button */
 #scrollTopBtn {
   position: fixed;
   bottom: 30px;
   right: 30px;
   background-color: var(--yellow);
-  color: var(--text-dark);
+  color: var(--dark-text);
   border: none;
   padding: 10px 15px;
   border-radius: 50%;
@@ -161,46 +168,4 @@ form textarea {
 
 #scrollTopBtn:hover {
   background-color: #ffe666;
-}
-
-/* ANIMACIÓN ENTRADA */
-section, header {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 1s ease forwards;
-}
-
-section:nth-of-type(1) { animation-delay: 0.3s; }
-section:nth-of-type(2) { animation-delay: 0.5s; }
-section:nth-of-type(3) { animation-delay: 0.7s; }
-section:nth-of-type(4) { animation-delay: 0.9s; }
-
-/* FORZAR MENÚ SIEMPRE HAMBURGUESA */
-@media (min-width: 992px) {
-  .navbar-expand-lg .navbar-collapse {
-    display: none !important;
-  }
-}
-
-/* ANIMACIÓN MENÚ */
-.navbar-collapse {
-  transition: all 0.4s ease;
-  transform: translateY(-20px);
-  opacity: 0;
-}
-
-.navbar-collapse.show {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-/* ANIMACIÓN BOTÓN TOGGLER */
-.navbar-toggler {
-  border: none;
-  outline: none;
-  transition: transform 0.3s ease-in-out;
-}
-
-.navbar-toggler:not(.collapsed) .navbar-toggler-icon {
-  transform: rotate(90deg);
 }
