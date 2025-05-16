@@ -253,3 +253,33 @@ a:hover {
   box-shadow: 0 0 20px 6px rgba(255, 255, 255, 0.5);
   transform: translateY(-5px);
 }
+
+.cert-gallery.cert-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  padding: 1rem;
+}
+
+/* Para mostrar exactamente 4 columnas en escritorio */
+@media (min-width: 992px) {
+  .cert-gallery.cert-card-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.cert-gallery.cert-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  padding: 1rem;
+}
+
+/* Para mostrar exactamente 4 columnas en escritorio */
+@media (min-width: 992px) {
+  .cert-gallery.cert-card-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
