@@ -235,31 +235,21 @@ a:hover {
   color: #ffffff;
 }
 
-.cert-gallery.cert-card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 20px;
-  justify-items: center;
-  padding: 1rem;
-}
-
 .cert-box {
   background-color: var(--cobalt);
   border-radius: 10px;
-  width: 150px;
-  height: 270px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+  width: 170px;
+  height: 290px;
   padding: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .cert-box:hover {
+  background-color: #0050c0;
+  box-shadow: 0 0 20px 6px rgba(255, 255, 255, 0.5);
   transform: translateY(-5px);
-  box-shadow: 0 0 15px 4px rgba(255, 255, 255, 0.3);
-  filter: brightness(1.2);
 }
-
