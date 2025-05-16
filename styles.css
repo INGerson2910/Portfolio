@@ -236,10 +236,10 @@ a:hover {
 }
 
 .cert-box {
-  background-color: var(--cobalt);
+  background-color: white; /* fondo blanco alrededor del iframe */
   border-radius: 10px;
-  width: 170px;
-  height: 290px;
+  width: 150px;
+  height: 270px;
   padding: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
@@ -249,10 +249,11 @@ a:hover {
 }
 
 .cert-box:hover {
-  background-color: #0050c0;
-  box-shadow: 0 0 20px 6px rgba(255, 255, 255, 0.5);
+  background-color: white;
   transform: translateY(-5px);
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.2);
 }
+
 
 .cert-gallery.cert-card-grid {
   display: grid;
@@ -262,22 +263,6 @@ a:hover {
   padding: 1rem;
 }
 
-/* Para mostrar exactamente 4 columnas en escritorio */
-@media (min-width: 992px) {
-  .cert-gallery.cert-card-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.cert-gallery.cert-card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  justify-items: center;
-  padding: 1rem;
-}
-
-/* Para mostrar exactamente 4 columnas en escritorio */
 @media (min-width: 992px) {
   .cert-gallery.cert-card-grid {
     grid-template-columns: repeat(4, 1fr);
