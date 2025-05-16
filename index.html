@@ -76,13 +76,19 @@
     </div>
     
 <!-- CERTIFICATIONS -->
-<section id="certifications" class="py-5 text-white" data-aos="fade-up" style="background-color: var(--cobalt);">
-  <div class="container text-center">
-    <h2 class="section-title text-white mb-4">Certifications</h2>
-  </div>
-
+<section id="certifications" class="py-5 text-center text-white" data-aos="fade-up">
   <div class="container">
-    <div class="cert-gallery cert-card-grid bg-white rounded p-4">
+    <h2 class="section-title text-white mb-4">Certifications</h2>
+
+    <div class="cert-gallery cert-card-grid">
+
+      <div class="cert-box">
+        <a href="https://app.exeed.pro/holder/badge/73154" target="_blank" class="d-flex flex-column align-items-center text-decoration-none">
+        <img src="badge73154.png" alt="EXIN Ethical Hacking Foundation Badge" class="img-fluid mb-2" style="max-height: 150px;">
+        <span class="fw-bold text-center text-dark small mt-1">EXIN Ethical Hacking Foundation</span>
+        </a>
+      </div>
+
 
       <div class="cert-box">
         <div data-iframe-width="150" data-iframe-height="270"
@@ -137,16 +143,14 @@
              data-share-badge-id="cb483daa-b215-4218-98be-dc9ba3830b5b"
              data-share-badge-host="https://www.credly.com"></div>
       </div>
-
     </div>
   </div>
 
+  <!-- Embed Credly badges -->
   <script async src="https://cdn.credly.com/assets/utilities/embed.js"></script>
 </section>
 
 
-
-  
   <!-- CONTACT -->
   <section id="contact" class="contact-section py-5" data-aos="fade-up">
     <div class="container">
@@ -167,6 +171,21 @@
         </div>
         <button type="submit" class="btn btn-primary">Send Message</button>
       </form>
+      <!-- Contact Info -->
+    <ul class="list-unstyled text-center mb-4">
+      <li class="mb-2">
+        <a href="mailto:gelemc2910@gmail.com" class="text-white text-decoration-none">
+          <img src="https://img.icons8.com/ios-glyphs/24/ffffff/new-post.png" alt="Email icon" class="me-2" />
+          gelemc2910@gmail.com
+        </a>
+      </li>
+      <li>
+        <a href="https://www.linkedin.com/in/ingerson2910/" target="_blank" class="text-white text-decoration-none">
+          <img src="https://img.icons8.com/ios-filled/24/ffffff/linkedin.png" alt="LinkedIn icon" class="me-2" />
+          linkedin.com/in/ingerson2910
+        </a>
+      </li>
+    </ul>
     </div>
   </section>
   
@@ -183,7 +202,7 @@
     window.onscroll = function () {
       scrollTopBtn.style.display = window.scrollY > 300 ? "block" : "none";
     };
-    // Filtro de proyectos
+
     document.addEventListener('DOMContentLoaded', function () {
       const filters = document.querySelectorAll(".filter");
       const projects = document.querySelectorAll(".project-card");
