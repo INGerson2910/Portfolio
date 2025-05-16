@@ -43,6 +43,21 @@
             <artifactId>allure-testng</artifactId>
             <version>2.24.0</version>
         </dependency>
+        <!-- Apache POI para leer Excel .xlsx -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.5</version>
+        </dependency>
+        <!-- Java Faker -->
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>
