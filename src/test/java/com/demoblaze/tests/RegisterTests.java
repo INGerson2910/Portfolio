@@ -1,98 +1,91 @@
 package com.demoblaze.tests;
 
+import com.demoblaze.pages.RegisterPage;
+import dataproviders.PasswordDataProvider;
+import dataproviders.RegisterDataProvider;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import io.qameta.allure.testng.AllureTestNg;
+import org.apache.commons.math3.analysis.function.Exp;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import utils.FakerUtils;
 
 import java.time.Duration;
 
 @Epic("Demoblaze")
-@Feature("Login")
-@Story("Registro de usuario")
+@Feature("Registration")
+@Story("User registration")
 @Severity(SeverityLevel.CRITICAL)
-@Listeners({AllureTestNg.class})
+@Listeners(AllureTestNg.class)
 public class RegisterTests extends BaseTest {
-
-
-    @Test(description = "CP01 - Validar que todos los campos sean obligatorios en el registro de usuario.")
-    public void testCamposObligatoriosVacios() {
+    @Test(dataProvider = "invalidRegistrationData", dataProviderClass = dataproviders.RegisterDataProvider.class,
+            description = "TC01 - Verify required fields for user registration.")
+    public void testRequiredFields(String username, String password){
         RegisterPage registerPage = new RegisterPage(driver);
-        registerPage.openSignupForm();
-        registerPage.enterCredentials("", "");
+        registerPage.openSignUpForm();
+        registerPage.enterCredentials(username, password);
         registerPage.submitForm();
-
         Alert alert = driver.switchTo().alert();
         String alertText = alert.getText();
         alert.accept();
 
-        Assert.assertTrue(alertText.contains("Please fill out Username and Password"), "Se esperaba mensaje de error por campos vacíos.");
+        Assert.assertTrue(alertText.contains("Please fill out Username and Password"), "Expected error message for empty fields.");
     }
 
-    @Test(description = "CP02 - Verificar que el correo electrónico tenga un formato válido.")
-    public void testFormatoUsuarioInvalido() {
+    @Test(dataProvider = "validAndInvalidEmails", dataProviderClass = RegisterDataProvider.class,
+            description = "TC02 - Verify that only valid emails are accepted.")
+    public void testEmailFormat(String email, boolean expectedValid) {
         RegisterPage registerPage = new RegisterPage(driver);
-        registerPage.openSignupForm();
-
-        String usuario = "usuario@dominio1";
-        String contrasena = "Password@123";
-
-        registerPage.enterCredentials(usuario, contrasena);
+        registerPage.openSignUpForm();
+        registerPage.enterCredentials(email, "Password@123");
         registerPage.submitForm();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+        String alertText = alert.getText();
+        alert.accept();
+
+        boolean systemAccepted = alertText.contains("Sign up successful.");
+
+        if ((!expectedValid && systemAccepted) || email.isEmpty()) {
+            Assert.fail("X The system accepted an invalid email: " + email);
+        }
+
+        if (expectedValid) {
+            Assert.assertTrue(systemAccepted, "X The system rejected a valid email: " + email);
+        }
+    }
+
+    @Test(dataProvider = "weakAndStrongPasswords", dataProviderClass = PasswordDataProvider.class,
+            description = "TC03 - Validate if password meet complexity rules.")
+    public void testPasswordComplexity(String password, boolean expectedValid){
+        RegisterPage registerPage = new RegisterPage(driver);
+        registerPage.openSignUpForm();
+
+        String email = FakerUtils.generateValidEmail();
+        registerPage.enterCredentials(email, password);
+        registerPage.submitForm();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.alertIsPresent());
 
         Alert alert = driver.switchTo().alert();
         String alertText = alert.getText();
 
-        boolean esEmailValido = usuario.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
-
-        if (!esEmailValido) {
-            Assert.assertFalse(alertText.contains("Sign up successful."), "ERROR: El sistema permitió registrar un usuario con correo inválido: " + usuario);
-        } else {
-            Assert.assertTrue(alertText.contains("Sign up successful."), "No se pudo registrar un usuario con correo válido.");
+        if(!expectedValid){
+            Assert.assertFalse(alertText.contains("Sign up successful"), "X The system incorrectly accepted a weak password: " + password);
         }
-    }
-
-    @Test(description = "CP03 - Validar que la contraseña cumpla con las reglas de complejidad.")
-    public void testContrasenaInvalida() {
-        RegisterPage registerPage = new RegisterPage(driver);
-        registerPage.openSignupForm();
-
-        String usuario = "usuarioTest1" + System.currentTimeMillis();
-        String contrasena = "1234"; // Muy débil: menos de 8 caracteres, sin mayúscula, sin símbolo
-
-        registerPage.enterCredentials(usuario, contrasena);
-        registerPage.submitForm();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        try {
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            String alertText = alert.getText();
-            alert.accept();
-
-            boolean esContrasenaSegura = contrasena.length() >= 8 &&
-                    contrasena.matches(".*[A-Z].*") &&
-                    contrasena.matches(".*[a-z].*") &&
-                    contrasena.matches(".*[0-9].*") &&
-                    contrasena.matches(".*[!@#$%^&*()_+{}\\[\\]:;<>,.?~\\\\/-].*");
-
-            if (!esContrasenaSegura) {
-                Assert.assertFalse(alertText.contains("Sign up successful."),
-                        "ERROR: El sistema aceptó una contraseña insegura: " + contrasena);
-                Assert.fail("Fallo intencional: el sistema no validó la complejidad de contraseña.");
-            } else {
-                Assert.assertTrue(alertText.contains("Sign up successful."),
-                        "No se pudo registrar con contraseña válida.");
-            }
-        } catch (Exception e) {
-            Assert.fail("No se encontró ninguna alerta para la prueba de contraseña.");
+        else{
+            Assert.assertTrue(alertText.contains("Sign up successful"), "X The system rejected a valid password: " + password);
         }
     }
 

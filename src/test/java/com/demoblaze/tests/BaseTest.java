@@ -13,11 +13,12 @@ import java.time.Duration;
 
 @Listeners({AllureTestNg.class})
 public class BaseTest {
+
     protected WebDriver driver;
-    WebDriverWait wait;
+    protected WebDriverWait wait;
 
     @BeforeMethod
-    public void setup() {
+    public void setUp() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -26,7 +27,7 @@ public class BaseTest {
     }
 
     @AfterMethod
-    public void teardown() {
+    public void tearDown() {
         if (driver != null) {
             driver.quit();
         }

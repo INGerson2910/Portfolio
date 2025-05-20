@@ -1,84 +1,84 @@
 package com.demoblaze.tests;
 
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
-import io.qameta.allure.testng.AllureTestNg;
+import com.demoblaze.pages.LoginPage;
+import com.demoblaze.tests.BaseTest;
+import dataproviders.LoginDataProvider;
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-@Epic("Demoblaze")
-@Feature("Login")
-@Story("Inicio de sesión")
-@Severity(SeverityLevel.CRITICAL)
-@Listeners({AllureTestNg.class})
-public class LoginTests extends BaseTest {
+public class LoginTests extends BaseTest{
 
-    @Test(description = "CP04 - Validar que el inicio de sesión funcione con credenciales correctas.")
-    public void testLoginExitoso() {
+    private static final Logger log = LoggerFactory.getLogger(LoginTests.class);
+
+    @Test(dataProvider = "validCredentials", dataProviderClass = LoginDataProvider.class,
+    description = "TC04 - Validate that login with correct credentials works.")
+    public void testLoginWithValidCredentials(String username, String password){
         LoginPage loginPage = new LoginPage(driver);
         loginPage.openLoginForm();
-        loginPage.login("gelemc2910@outlook.com", "1234");
+        loginPage.enterCredentials(username, password);
+        loginPage.submitLogin();
 
-        Assert.assertTrue(loginPage.isLoginSuccessful(), "El usuario no pudo iniciar sesión con credenciales válidas.");
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.alertIsPresent());
+
+        Alert alert = driver.switchTo().alert();
+        String alertText = alert.getText();
+
+        Assert.assertFalse(alertText.contains("Wrong"), "Expected login to be successful.");
     }
 
-    @Test(description = "CP05 - Validar que se muestre un mensaje de error al iniciar sesión con credenciales incorrectas.")
-    public void testLoginConCredencialesIncorrectas() {
+    @Test(dataProvider = "invalidCredentials", dataProviderClass = LoginDataProvider.class,
+    description = "TC05 - Validate error message shown when login with incorrect credentials.")
+    public void testLoginWithInvalidCredentials(String username, String password) throws InterruptedException {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.openLoginForm();
-        loginPage.login("gelemeco2910@gmail.com", "gTr9&kSml#7");
+        loginPage.enterCredentials(username, password);
+        loginPage.submitLogin();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        try {
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            String alertText = alert.getText();
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.alertIsPresent());
+
+        Alert alert = driver.switchTo().alert();
+        String alertText = alert.getText();
+        alert.accept();
+
+        Assert.assertTrue(alertText.contains("Wrong"), "Expected error alert for invalid login.");
+    }
+
+    @Test(description = "TC06 - Validate if the user is blocked after five failed login attempts.")
+    public void testLoginBlockedAfterMultipleFailures(){
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.openLoginForm();
+
+        for(int i=0; i<5; i++){
+            loginPage.enterCredentials("gelemeco2910@gmail.com", "wrongPassword");
+            loginPage.submitLogin();
+
+            new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.alertIsPresent());
+
+            Alert alert = driver.switchTo().alert();
             alert.accept();
-
-            Assert.assertTrue(alertText.contains("Wrong password") || alertText.contains("User does not exist"), "El mensaje de error esperado no fue mostrado. Texto recibido: " + alertText);
-        } catch (Exception e) {
-            Assert.fail("No se encontró ninguna alerta de error tras intento de login fallido.");
         }
 
+        // Sixth attempt
+        loginPage.enterCredentials("gelemeco2910@gmail.com", "wrongPassword");
+        loginPage.submitLogin();
+
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.alertIsPresent());
+        Alert alert = driver.switchTo().alert();
+        String alertText = alert.getText();
+        alert.accept();
+
+        Assert.fail("X The system did not block the user after five failed login attempts.");
     }
-
-    @Test(description = "CP06 - Validar que el usuario sea bloqueado después de cinco intentos fallidos de inicio de sesión.")
-    public void testBloqueoTrasCincoIntentosFallidos() {
-        LoginPage loginPage = new LoginPage(driver);
-        boolean fueBloqueado = false;
-        String usuario = "gelemeco2910@gmail.com";
-        String contrasenaIncorrecta = "gTr9&kSml#7";
-
-        for (int i = 1; i <= 5; i++) {
-            driver.get("https://www.demoblaze.com");
-            loginPage.openLoginForm();
-            loginPage.login(usuario, contrasenaIncorrecta);
-
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-            try {
-                Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-                String mensaje = alert.getText();
-                alert.accept();
-
-                if (mensaje.toLowerCase().contains("blocked") || mensaje.toLowerCase().contains("demasiados")) {
-                    fueBloqueado = true;
-                    break;
-                }
-            } catch (Exception e) {
-                Assert.fail("No se encontró alerta en el intento #" + i);
-            }
-        }
-
-        // El sistema actualmente NO bloquea, así que esta prueba debe FALLAR intencionalmente
-        Assert.assertTrue(fueBloqueado, "Fallo intencional: el sistema no bloqueó al usuario tras 5 intentos fallidos.");
-    }
-
 }
