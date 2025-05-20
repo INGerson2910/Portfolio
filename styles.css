@@ -11,7 +11,7 @@
 /* Global Styles */
 body {
   background-color: var(--cobalt);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Fira Code', monospace;
   margin: 0;
   padding: 0;
   color: var(--light-text);
@@ -19,12 +19,14 @@ body {
 }
 
 
-h1, h2, h3 {
-  color: var(--light-text);
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Press Start 2P', cursive;
+  color: var(--yellow);
   font-weight: 700;
 }
 
-.section-title,
+
 .section-subtitle {
   color: var(--light-text);
 }
@@ -34,7 +36,7 @@ h1, h2, h3 {
 .section-title {
   font-size: 2rem;
   font-weight: bold;
-  color: var(--light-text);
+  color: var(--yellow);
 }
 
 .subtitle {
@@ -78,8 +80,6 @@ a:hover {
 .btn-primary:hover {
   background-color: #ffe666;
 }
-
-/* Scroll Button */
 
 
 .project-card-grid,
