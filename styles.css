@@ -1,14 +1,10 @@
-<<<<<<< HEAD
 /* Inter Font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
-=======
->>>>>>> 6c9268efd83faab6cb49e570926dc4b4968cd2c2
 :root {
   --cobalt: #0047AB;
   --yellow: #FFC300;
   --light-text: #ffffff;
-<<<<<<< HEAD
   --dark-text: #1c1c1c;
 }
 
@@ -20,28 +16,19 @@ body {
   padding: 0;
   color: var(--light-text);
   scroll-behavior: smooth;
-=======
 }
 
-body {
-  background-color: var(--cobalt);
-  font-family: 'Inter', sans-serif;
-  color: var(--light-text);
-  margin: 0; padding: 0;
->>>>>>> 6c9268efd83faab6cb49e570926dc4b4968cd2c2
-}
 
 h1, h2, h3 {
   color: var(--light-text);
   font-weight: 700;
-<<<<<<< HEAD
-  color: var(--light-text);
 }
 
 .section-title,
 .section-subtitle {
   color: var(--light-text);
 }
+
 
 
 .section-title {
@@ -93,8 +80,7 @@ a:hover {
 }
 
 /* Scroll Button */
-=======
-}
+
 
 .project-card-grid,
 .cert-card-grid {
@@ -130,36 +116,26 @@ a:hover {
   object-fit: cover;
 }
 
-.project-title {
-  color: #0047AB;
-  font-weight: 600;
-  margin-top: 10px;
-}
 
 footer {
   background: var(--cobalt);
 }
 
->>>>>>> 6c9268efd83faab6cb49e570926dc4b4968cd2c2
 #scrollTopBtn {
   position: fixed;
   bottom: 30px;
   right: 30px;
   background-color: var(--yellow);
-<<<<<<< HEAD
   color: var(--dark-text);
   border: none;
   padding: 10px 15px;
-=======
   color: black;
   padding: 10px;
->>>>>>> 6c9268efd83faab6cb49e570926dc4b4968cd2c2
   border-radius: 50%;
   border: none;
   font-size: 1.5rem;
   display: none;
   z-index: 1000;
-<<<<<<< HEAD
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   transition: background-color 0.3s;
@@ -199,13 +175,6 @@ footer {
   color: var(--cobalt);
 }
 
-.project-card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 20px;
-  justify-items: center;
-  padding: 1rem;
-}
 
 .project-box {
   background-color: var(--cobalt);
@@ -313,6 +282,4 @@ footer {
 #contact input::placeholder,
 #contact textarea::placeholder {
   color: #666666;
-=======
->>>>>>> 6c9268efd83faab6cb49e570926dc4b4968cd2c2
 }
