@@ -300,3 +300,9 @@ footer {
 #certifications {
   margin-bottom: 5rem;
 }
+
+.about-text {
+  text-align: justify;
+  max-width: 900px;
+  margin: 0 auto;
+}
