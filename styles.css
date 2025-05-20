@@ -283,3 +283,20 @@ footer {
 #contact textarea::placeholder {
   color: #666666;
 }
+
+#contact button {
+  margin-bottom: 2rem;
+}
+
+#contact ul {
+  margin-top: 1rem;
+}
+
+#projects {
+  margin-bottom: 5rem;
+}
+
+
+#certifications {
+  margin-bottom: 5rem;
+}
