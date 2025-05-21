@@ -254,6 +254,72 @@ footer {
   }
 }
 
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  header,
+  section {
+    text-align: center;
+    padding: 1rem;
+  }
+
+  h1, h2 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .project-gallery,
+  .cert-gallery.cert-card-grid {
+    grid-template-columns: 1fr !important;
+    padding: 0.5rem;
+  }
+
+  .project-box,
+  .cert-box {
+    width: 90%;
+    margin: 0 auto 1rem auto;
+  }
+
+  .cert-box img {
+    width: 100%;
+    height: auto;
+  }
+
+  .filter-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .filter-buttons .filter {
+    width: 90%;
+    margin: 0.3rem 0;
+  }
+
+  #contact input,
+  #contact textarea {
+    width: 100%;
+    max-width: 100%;
+    font-family: 'Courier New', monospace;
+  }
+
+  .navbar-brand {
+    font-size: 1rem;
+  }
+
+  footer {
+    font-size: 0.75rem;
+  }
+}
+
+
 /* ----------------- CONTACT ----------------- */
 #contact {
   background-color: var(--cobalt);
