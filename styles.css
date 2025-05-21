@@ -16,6 +16,8 @@ body {
   padding: 0;
   color: var(--light-text);
   scroll-behavior: smooth;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 
@@ -102,6 +104,8 @@ a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .project-box:hover,
@@ -317,4 +321,18 @@ footer {
 
 .navbar-brand:hover {
   text-shadow: 0 0 10px rgba(255, 195, 0, 1), 0 0 20px rgba(255, 195, 0, 0.8);
+}
+
+h1, h2, h3 {
+  text-align: center;
+  color: var(--yellow) !important;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  text-align: center;
 }
