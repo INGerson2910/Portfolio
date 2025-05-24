@@ -1,5 +1,3 @@
-# Portfolio
-My portfolio
 # DEMOBLAZE Automation Project
 
 This project contains automated tests for [demoblaze.com](https://www.demoblaze.com), developed using Java, Selenium WebDriver, TestNG, and Allure for reporting.
