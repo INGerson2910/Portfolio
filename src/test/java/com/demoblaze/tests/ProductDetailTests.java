@@ -14,13 +14,13 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 @Epic("Demoblaze")
-@Feature("Página de detalle")
-@Story("Detalle de productos")
+@Feature("Detail page")
+@Story("Product detail")
 @Severity(SeverityLevel.CRITICAL)
 @Listeners({AllureTestNg.class})
 public class ProductDetailTests extends BaseTest{
-    @Test(description = "CP12 - Verificar que al seleccionar un producto se muestre su nombre, descripción, precio e imagen ampliada.")
-    public void testDetalleProductoVisible(){
+    @Test(description = "TC12 - Verify that name, description, enlarged image and price are shown when a product is selected.")
+    public void testVisibleProductDetails(){
         NavigationPage navigationPage = new NavigationPage(driver);
         ProductDetailPage productDetailPage = new ProductDetailPage(driver);
 
@@ -28,25 +28,25 @@ public class ProductDetailTests extends BaseTest{
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("name")));
 
-        String nombre = productDetailPage.getProductName();
-        String descripcion = productDetailPage.getProductDescription();
-        String precio = productDetailPage.getProductPrice();
-        boolean imagenVisible = productDetailPage.isImageDisplayed();
+        String name = productDetailPage.getProductName();
+        String description = productDetailPage.getProductDescription();
+        String price = productDetailPage.getProductPrice();
+        boolean visibleImage = productDetailPage.isImageDisplayed();
 
-        Assert.assertFalse(nombre.trim().isEmpty(), "X El nombre del producto está vacío.");
-        Assert.assertFalse(descripcion.trim().isEmpty(), "X La descripción del producto está vacía.");
-        Assert.assertFalse(precio.trim().isEmpty(), "X El precio del producto está vacío.");
-        Assert.assertTrue(imagenVisible, "X La imagen del producto no se muestra.");
+        Assert.assertFalse(name.trim().isEmpty(), "X Product name is empty.");
+        Assert.assertFalse(description.trim().isEmpty(), "X Product description is empty.");
+        Assert.assertFalse(price.trim().isEmpty(), "X Product price is empty.");
+        Assert.assertTrue(visibleImage, "X Product image is not shown.");
     }
 
-    @Test(description = "CP13 - Validar que la página de detalle incluya el botón 'Add to cart'.")
-    public void testBotonAddToCartVisible(){
+    @Test(description = "TC13 - Validate 'Add to cart' button in the detail page.")
+    public void testAddToCartButtonVisible(){
         NavigationPage navigationPage = new NavigationPage(driver);
         navigationPage.clickOnProductByName("Samsung galaxy s6");
 
         ProductDetailPage productDetailPage = new ProductDetailPage(driver);
         boolean visible = productDetailPage.isAddToCartButtonVisible();
 
-        Assert.assertTrue(visible, "X El botón 'Add to cart' no está visible en la vista del producto");
+        Assert.assertTrue(visible, "X 'Add to cart' button is not visible in the product view.");
     }
 }

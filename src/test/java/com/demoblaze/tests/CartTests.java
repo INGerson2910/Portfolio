@@ -18,13 +18,13 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 @Epic("Demoblaze")
-@Feature("Carrito")
-@Story("Gestión del carrito")
+@Feature("Cart")
+@Story("Cart management")
 @Severity(SeverityLevel.CRITICAL)
 @Listeners({AllureTestNg.class})
 public class CartTests extends BaseTest{
-    @Test(description = "CP14 - Verificar que al hacer clic en \"Añadir al carrito\", el producto se agregue correctamente.")
-    public void testAgregarProductoAlCarrito(){
+    @Test(description = "TC14 - Verify that a product is added to the cart when clicking 'Add to cart' button.")
+    public void testAddProductToCart(){
         NavigationPage navigationPage = new NavigationPage(driver);
         ProductDetailPage productDetailPage = new ProductDetailPage(driver);
         CartPage cartPage = new CartPage(driver);
@@ -35,65 +35,100 @@ public class CartTests extends BaseTest{
         cartPage.isProductInCart("Sony vaio i7");
     }
 
-    @Test(description = "CP15 - Validar que exista una opción clara para regresar a la lista de productos desde la página de detalle.")
-    public void testRegresarAListaDesdeDetalle(){
+    @Test(description = "TC15 - Validate a clear option to back home page from the detail page.")
+    public void testBackToListFromDetail(){
         NavigationPage navigationPage = new NavigationPage(driver);
 
-        // Paso 1: Ir a la vista de detalle de un producto
+        // Step 1: Go to a product detail view
         navigationPage.clickOnProductByName("Samsung galaxy s6");
 
-        // Paso 2: Hacer clic en el logo de la tienda
+        // Step 2: Click on the store logo
         WebElement linkToHome = wait.until(ExpectedConditions.elementToBeClickable(By.id("nava")));
         linkToHome.click();
 
-        // Paso 3: Validar que volvemos a la lista de productos
+        // Step 3: Validate that we are back to the product list
         WebElement listaProductos = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("tbodyid")));
-        Assert.assertTrue(listaProductos.isDisplayed(), "X No se redirigió correctamente a la lista de productos.");
+        Assert.assertTrue(listaProductos.isDisplayed(), "X No return to the product list.");
     }
 
-    @Test(description = "CP16 - Verificar que se pueda añadir un producto al carrito desde la página de detalles.")
-    public void testAgregarDesdeDetalle(){
+    @Test(description = "TC16 - Verify that a product can be added to the cart from its detail page.")
+    public void testAddFromDetail(){
         NavigationPage navigationPage = new NavigationPage(driver);
         ProductDetailPage productDetailPage = new ProductDetailPage(driver);
         CartPage cartPage = new CartPage(driver);
 
-        // Ir al producto
+        // Go to the product
         navigationPage.clickOnProductByName("Sony vaio i7");
 
-        // Hacer clic en "Añadir al carrito"
+        // Click 'Add to cart'
         productDetailPage.clickAddToCart();
 
-        // Ir al carrito y validar presencia del producto
+        // Go to the cart and validate if the product added is present
         navigationPage.goToCart();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        Assert.assertTrue(cartPage.isProductInCart("Sony vaio i7"), "El producto no se encuentra en el carrito.");
+        Assert.assertTrue(cartPage.isProductInCart("Sony vaio i7"), "Product is not in the cart.");
     }
 
-    @Test(description = "CP17 - Validar que el carrito muestre el nombre, precio y cantidad de los productos añadidos.")
-    public void testValidarCantidadEnCarrito() {
+    @Test(description = "TC17 - Validate that product details are shown in the cart.")
+    public void testValidateQuantityInCart() {
         NavigationPage navigationPage = new NavigationPage(driver);
         ProductDetailPage productDetailPage = new ProductDetailPage(driver);
         CartPage cartPage = new CartPage(driver);
 
-        String producto = "Nexus 6";
-        String precio = "650";
+        String product = "Nexus 6";
+        String price = "650";
 
-        // Agregar el mismo producto dos veces
-        navigationPage.clickOnProductByName(producto);
+        // Add the same product twice
+        navigationPage.clickOnProductByName(product);
         productDetailPage.clickAddToCart();
 
         WebElement linkToHome = wait.until(ExpectedConditions.elementToBeClickable(By.id("nava")));
         linkToHome.click();
 
-        navigationPage.clickOnProductByName(producto);
+        navigationPage.clickOnProductByName(product);
         productDetailPage.clickAddToCart();
 
         navigationPage.goToCart();
 
-        // Validar que se muestra cantidad 2 para el producto (esto debería fallar si no hay columna "Cantidad")
-        Assert.assertTrue(cartPage.validateProductDetails(producto, precio, 2),
-                "X No se muestra la cantidad correcta (2) para el producto añadido dos veces.");
+        // Validate that 2 quantity is shown for the product (this should fail if no 'Quantity' column exists)
+        Assert.assertTrue(cartPage.validateProductDetails(product, price, 2),
+                "X Correct quantity (2) is not shown for the product added twice.");
     }
+
+    @Test(description = "TC18 - Validate product deletion from the cart.")
+    public void testRemoveProductFromCart(){
+        NavigationPage navigationPage = new NavigationPage(driver);
+        ProductDetailPage productDetailPage = new ProductDetailPage(driver);
+        CartPage cartPage = new CartPage(driver);
+
+        // Add product to the cart
+        navigationPage.clickOnProductByName("Nexus 6");
+        productDetailPage.clickAddToCart();
+
+        // Go to the cart
+        navigationPage.goToCart();
+
+        // Wait the product to appear in the cart
+        cartPage.waitForProductInCart("Nexus 6");
+
+        // Get total before removing
+        int totalBefore = cartPage.getCartTotal();
+
+        // Remove product
+        cartPage.deleteProductByName("Nexus 6");
+
+        // Wait the product to disappear from the cart
+        cartPage.waitForProductToBeRemoved("Nexus 6");
+
+        // Get total after removing
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.presenceOfElementLocated(By.id("totalp")));
+        int totalAfter = cartPage.getCartTotal();
+
+        // Validate if the product was removed and total was updated
+        Assert.assertTrue(cartPage.isProductAbsent("Nexus 6"), "X The product is still present in the cart.");
+        Assert.assertTrue(totalAfter < totalBefore, "X The cart total did not update correctly after removal.");
+    }
+
 
 
 }

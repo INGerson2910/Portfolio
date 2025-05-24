@@ -3,6 +3,12 @@ package com.demoblaze.tests;
 import com.demoblaze.pages.LoginPage;
 import com.demoblaze.tests.BaseTest;
 import dataproviders.LoginDataProvider;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
+import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,10 +16,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
+@Epic("Demoblaze")
+@Feature("Login")
+@Story("User login")
+@Severity(SeverityLevel.CRITICAL)
+@Listeners(AllureTestNg.class)
 public class LoginTests extends BaseTest{
 
     private static final Logger log = LoggerFactory.getLogger(LoginTests.class);

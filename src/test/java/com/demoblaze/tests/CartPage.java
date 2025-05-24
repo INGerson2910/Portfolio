@@ -21,14 +21,14 @@ public class CartPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         try {
-            // Esperar hasta que el producto esté presente en el carrito
+            // Wait until product added is present in the cart
             return wait.until(driver -> {
                 List<WebElement> productos = driver.findElements(By.cssSelector("#tbodyid .success td:nth-child(2)"));
                 return productos.stream()
                         .anyMatch(e -> e.getText().trim().equalsIgnoreCase(productName));
             });
         } catch (TimeoutException e) {
-            return false; // No se encontró el producto a tiempo
+            return false; // Product was not found in time
         }
     }
 
@@ -45,11 +45,11 @@ public class CartPage {
     }
 
     public void removeProduct(String productName){
-        List<WebElement> filas = driver.findElements(By.cssSelector("tr.success"));
-        for(WebElement fila : filas){
-            String nombre = fila.findElement(By.cssSelector("td:nth-child(4) a")).getText();
-            if(nombre.equalsIgnoreCase(productName)){
-                fila.findElement(By.cssSelector("td:nth-child(4) a")).click();
+        List<WebElement> rows = driver.findElements(By.cssSelector("tr.success"));
+        for(WebElement row : rows){
+            String name = row.findElement(By.cssSelector("td:nth-child(4) a")).getText();
+            if(name.equalsIgnoreCase(productName)){
+                row.findElement(By.cssSelector("td:nth-child(4) a")).click();
                 break;
             }
         }
@@ -73,5 +73,34 @@ public class CartPage {
         }
         return counter == expectedQuantity;
     }
+
+    public void waitForProductInCart(String productName){
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[text()='" + productName + "']")));
+    }
+
+    public void deleteProductByName(String productName){
+        WebElement deleteLink = driver.findElement(By.xpath("//tr[td[contains(text(), 'Nexus 6')]]//a[text()='Delete']"));
+        deleteLink.click();
+    }
+
+    public void waitForProductToBeRemoved(String productName){
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//td[text()='" + productName + "']")));
+    }
+
+    public boolean isProductAbsent(String productName){
+        return driver.findElements(By.xpath("//td[text()='" + productName + "']")).isEmpty();
+    }
+
+    public int getCartTotal() {
+        String totalText = driver.findElement(By.id("totalp")).getText().trim();
+
+        // If empty, assume 0
+        if (totalText.isEmpty()) {
+            return 0;
+        }
+
+        return Integer.parseInt(totalText);
+    }
+
 
 }
