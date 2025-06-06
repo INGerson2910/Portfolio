@@ -402,3 +402,7 @@ img {
 .container {
   text-align: center;
 }
+
+.bg-cobalt {
+  background-color: #0047AB !important;
+}

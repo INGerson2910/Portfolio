@@ -36,7 +36,11 @@
   <!-- NAVBAR -->
   <nav class="navbar navbar-dark bg-dark fixed-top border-bottom border-secondary">
     <div class="container">
-      <a class="navbar-brand" href="#">Gerson Medina</a>
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="banner.png" alt="Logo" style="height: 32px;" class="me-2">
+      </a>
+
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -45,6 +49,7 @@
           <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
           <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
           <li class="nav-item"><a class="nav-link" href="#certifications">Certifications</a></li>
+          <li class="nav-item"><a class="nav-link" href="#articles">Articles</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
         </ul>
       </div>
@@ -85,6 +90,7 @@
         </a>
       </div>
     </div>
+
     
 <!-- CERTIFICATIONS -->
 <section id="certifications" class="py-5 text-center text-white" data-aos="fade-up">
@@ -169,6 +175,40 @@
 </section>
 
 
+<!-- ARTICLES -->
+<section id="articles" class="py-5 text-center bg-cobalt text-white" data-aos="fade-up">
+  <div class="container">
+    <h2 class="section-title mb-4">Latest posts</h2>
+    <div class="row" id="blog-posts">
+    </div>
+  </div>
+</section>
+
+<script>
+  fetch("https://api.rss2json.com/v1/api.json?rss_url=https://ingerson2910.blogspot.com/feeds/posts/default?alt=rss")
+    .then(response => response.json())
+    .then(data => {
+      const posts = data.items.slice(0, 3);
+      const container = document.getElementById("blog-posts");
+
+      posts.forEach(post => {
+        const div = document.createElement("div");
+        div.className = "col-md-4 mb-4";
+        div.innerHTML = `
+          <div class="card h-100 shadow-sm text-start">
+            <img src="${post.thumbnail || 'https://via.placeholder.com/600x300?text=Blog+Post'}" class="card-img-top" alt="${post.title}">
+            <div class="card-body">
+              <h5 class="card-title">${post.title}</h5>
+              <p class="card-text">${post.description.slice(0, 100).replace(/<[^>]*>/g, '')}...</p>
+              <a href="${post.link}" target="_blank" class="btn btn-primary">Read More</a>
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    });
+</script>
+
   <!-- CONTACT -->
   <section id="contact" class="contact-section py-5" data-aos="fade-up">
     <div class="container">
@@ -209,6 +249,13 @@
           INGerson2910
         </a>
       </li>
+      <li>
+        <a href="https://ingerson2910.blogspot.com/" target="_blank" class="text-white text-decoration-none">
+        <img src="https://img.icons8.com/ios-glyphs/24/ffffff/blogger.png" alt="Blogger icon" class="me-2" />
+        INGERSON
+        </a>
+      </li>
+
 
     </ul>
     </div>
