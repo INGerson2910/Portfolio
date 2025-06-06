@@ -19,13 +19,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Epic("Demoblaze")
-@Feature("Navegación")
-@Story("Navegación de productos")
+@Feature("Browsing")
+@Story("Product browsing")
 @Severity(SeverityLevel.CRITICAL)
 @Listeners({AllureTestNg.class})
 public class NavigationTests extends BaseTest {
-    @Test(description = "CP07 - Validar que el sitio muestre las categorías 'Laptops', 'Phones' y 'Monitors'")
-    public void testCategoriasVisibles() {
+    @Test(description = "CP07 - Validate that the categories 'Laptops', 'Phones' and 'Monitors' are shown in the site.")
+    public void testVisibleCategories() {
         NavigationPage navigationPage = new NavigationPage(driver);
 
         List<String> categorias = navigationPage.getCategoryNames();
@@ -35,82 +35,80 @@ public class NavigationTests extends BaseTest {
         Assert.assertTrue(categorias.contains("Monitors"), "X La categoría 'Monitors' no está visible.");
     }
 
-    @Test(description = "CP08 - Validar que al seleccionar una categoría solo se muestren productos de esa categoría")
-    public void testSoloProductosDeCategoriaPhones() {
+    @Test(description = "TC08 - Validate that only products from the selected category are shown.")
+    public void testOnlyProductsFromCategory() {
         NavigationPage navigationPage = new NavigationPage(driver);
         navigationPage.clickCategory("Phones");
 
-        List<WebElement> productos = driver.findElements(By.cssSelector(".card-title"));
-        List<String> nombresProductos = productos.stream()
+        List<WebElement> products = driver.findElements(By.cssSelector(".card-title"));
+        List<String> productNames = products.stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
 
-        Assert.assertFalse(nombresProductos.isEmpty(), "X No se mostraron productos tras hacer clic en 'Phones'.");
+        Assert.assertFalse(productNames.isEmpty(), "X No products shown after selecting 'Phones' category...");
 
-        // Lista de palabras clave que indican un producto de tipo Phone
-        String[] palabrasClavePhones = {
+        String[] keyWordsPhones = {
                 "samsung", "iphone", "nokia", "sony", "htc", "phone", "xperia", "lg", "lumia", "motorola", "nexus"
         };
 
-        for (String nombre : nombresProductos) {
-            boolean perteneceACategoria = false;
-            for (String palabra : palabrasClavePhones) {
-                if (nombre.toLowerCase().contains(palabra)) {
-                    perteneceACategoria = true;
+        for (String productName : productNames) {
+            boolean belongsToCategory = false;
+            for (String word : keyWordsPhones) {
+                if (productName.toLowerCase().contains(word)) {
+                    belongsToCategory = true;
                     break;
                 }
             }
-            Assert.assertTrue(perteneceACategoria,
-                    "X Producto inválido en categoría 'Phones': '" + nombre + "'");
+            Assert.assertTrue(belongsToCategory,
+                    "X Invalid product in 'Phones': '" + productName + "'");
         }
     }
 
 
-    @Test(description = "CP09 - Verificar que cada producto muestre imagen, nombre y precio")
-    public void testInformacionVisiblePorProducto() {
+    @Test(description = "TC09 - Verify that each product detail shows image, name and price.")
+    public void testVisibleInfoByProduct() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar hasta que al menos un producto esté visible
         wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.cssSelector("#tbodyid .col-lg-4.col-md-6.mb-4"))
         );
 
-        List<WebElement> productos = driver.findElements(By.cssSelector("#tbodyid .col-lg-4.col-md-6.mb-4"));
+        List<WebElement> products = driver.findElements(By.cssSelector("#tbodyid .col-lg-4.col-md-6.mb-4"));
 
-        Assert.assertFalse(productos.isEmpty(), "X No se encontraron productos en la página principal.");
+        Assert.assertFalse(products.isEmpty(), "X No products found in the home page.");
 
-        for (WebElement producto : productos) {
-            WebElement imagen = producto.findElement(By.cssSelector("img.card-img-top.img-fluid"));
-            WebElement nombre = producto.findElement(By.cssSelector(".card-title a"));
-            WebElement precio = producto.findElement(By.tagName("h5"));
+        for (WebElement product : products) {
+            WebElement image = product.findElement(By.cssSelector("img.card-img-top.img-fluid"));
+            WebElement name = product.findElement(By.cssSelector(".card-title a"));
+            WebElement price = product.findElement(By.tagName("h5"));
 
-            Assert.assertTrue(imagen.isDisplayed(), "X La imagen del producto no es visible.");
-            Assert.assertFalse(nombre.getText().trim().isEmpty(), "X El nombre del producto está vacío.");
-            Assert.assertFalse(precio.getText().trim().isEmpty(), "X El precio del producto está vacío.");
+            Assert.assertTrue(image.isDisplayed(), "X Product image is not visible.");
+            Assert.assertFalse(name.getText().trim().isEmpty(), "X Product name is empty.");
+            Assert.assertFalse(price.getText().trim().isEmpty(), "X Product price is empty.");
         }
     }
 
-    @Test(description = "CP10 - Validar que el sistema no muestre productos si la categoría está vacía.")
-    public void testCategoriaVacia(){
+    @Test(description = "TC10 - Validate that no products are shown from empty categories.")
+    public void testEmptyCategory(){
         NavigationPage navigationPage = new NavigationPage(driver);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("tbodyid")));
 
-        List<WebElement> productos = driver.findElements(By.cssSelector("#tbodyid .card-block"));
+        List<WebElement> products = driver.findElements(By.cssSelector("#tbodyid .card-block"));
 
-        boolean hayProductos = !productos.isEmpty();
+        boolean existentProducts = !products.isEmpty();
 
-        if(hayProductos){
-            System.out.println("Este entorno no tiene una categoría vacía real.");
-            Assert.fail("Se esperaban 0 productos, pero se encontraron algunos");
+        if(existentProducts){
+            System.out.println("This environment does not have any real empty category.");
+            Assert.fail("0 products expected, but some were found.");
         }
         else{
-            System.out.println("No se encontraron productos, comportamiento esperado.");
+            System.out.println("No products found, expected behavior.");
             Assert.assertTrue(true);
         }
     }
 
-    @Test(description = "CP11 - Validar que la navegación entre categorías sea dinámica sin recargar toda la página.")
-    public void testNavegacionDinamicaEntreCategorias(){
+    @Test(description = "TC11 - Validate dynamic browsing between categories and reloading is not needed.")
+    public void testDynamicBrowsingBetweenCategories(){
         NavigationPage navigationPage = new NavigationPage(driver);
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("tbodyid")));
@@ -128,6 +126,6 @@ public class NavigationTests extends BaseTest {
                 ? driver.manage().getCookieNamed("connect.sid").getValue()
                 : driver.getWindowHandle();
 
-        Assert.assertEquals(sessionBefore, sessionAfter, "X La página se recargó completamente al cambiar de categoría.");
+        Assert.assertEquals(sessionBefore, sessionAfter, "X Page was reloaded when changing category.");
     }
 }
