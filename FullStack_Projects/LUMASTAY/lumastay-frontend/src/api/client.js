@@ -1,18 +1,23 @@
-const API_BASE_URL = 'http://192.168.3.8:4000/api/v1';
+const API_BASE_URL = 'http://192.168.1.111:4000/api/v1';
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...options,
     headers: {
       'Content-Type': 'application/json',
       ...(options.headers || {})
-    },
-    ...options
+    }
   });
 
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error(data?.error?.message || 'Request failed');
+    const details = data?.error?.details;
+    const firstDetail = Array.isArray(details) && details.length > 0
+      ? details[0]?.message
+      : null;
+
+    throw new Error(firstDetail || data?.error?.message || 'Request failed');
   }
 
   return data;
