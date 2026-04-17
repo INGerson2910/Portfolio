@@ -10,9 +10,24 @@ import {
   Waves,
   XCircle
 } from 'lucide-react';
-import { BackButton, DatePickerField, DestinationCombobox, Field, LocaleSelector, Stepper } from './components/Controls.jsx';
+import {
+  BackButton,
+  DatePickerField,
+  DestinationCombobox,
+  LocaleSelector,
+  Stepper
+} from './components/Controls.jsx';
 import { Header } from './components/Header.jsx';
-import { cancelReservation, createReservation, fetchAvailability, fetchDestinations, fetchReservations, loginQa, searchHotels } from './api/client.js';
+import {
+  cancelReservation,
+  createReservation,
+  fetchAvailability,
+  fetchDestinations,
+  fetchReservations,
+  loginUser,
+  registerUser,
+  searchHotels
+} from './api/client.js';
 
 const copy = {
   es: {
@@ -24,6 +39,16 @@ const copy = {
       confirmation: 'Confirmación',
       reservations: 'Mis reservas'
     },
+    loginTitle: 'Iniciar sesión',
+    registerTitle: 'Crear cuenta',
+    login: 'Entrar',
+    register: 'Registrarse',
+    logout: 'Cerrar sesión',
+    goToRegister: 'Crear una cuenta',
+    goToLogin: 'Ya tengo cuenta',
+    password: 'Contraseña',
+    fullName: 'Nombre completo',
+    loginRequired: 'Debes iniciar sesión para continuar.',
     heroEyebrow: 'Hoteles reales desde la API',
     heroTitle: 'Busca, compara y reserva',
     destination: 'Destino',
@@ -73,7 +98,6 @@ const copy = {
     myReservations: 'Mis reservas',
     cancel: 'Cancelar reserva',
     cancelled: 'Reserva cancelada',
-    qaLoginError: 'No se pudo iniciar sesión automática de QA.',
     validationReservationHolder: 'Ingresa el titular de la reservación.',
     validationBuyerName: 'Ingresa el nombre del comprador.',
     validationEmail: 'Ingresa el correo electrónico.',
@@ -93,7 +117,24 @@ const copy = {
     priceAsc: 'Precio menor',
     priceDesc: 'Precio mayor',
     ratingDesc: 'Mejor puntuación',
-    footer: 'Frontend conectado a API · datos realistas · flujo Booking-like · data-testid para QA automation'
+    footer: 'Frontend conectado a API · datos realistas · flujo Booking-like · data-testid para QA automation',
+    applyFilters: 'Aplicar filtros',
+    hideFilters: 'Ocultar filtros',
+    minRating: 'Rating mínimo',
+    minPrice: 'Precio mínimo',
+    maxPrice: 'Precio máximo',
+    propertyType: 'Tipo de propiedad',
+    amenity: 'Amenidad',
+    all: 'Todos',
+    hotelType: 'Hotel',
+    resortType: 'Resort',
+    businessType: 'Business hotel',
+    apartHotelType: 'Apart-hotel',
+    wifiAmenity: 'Wi-Fi',
+    breakfastAmenity: 'Desayuno',
+    beachAmenity: 'Playa',
+    poolAmenity: 'Alberca',
+  
   },
   en: {
     screens: {
@@ -104,6 +145,16 @@ const copy = {
       confirmation: 'Confirmation',
       reservations: 'My reservations'
     },
+    loginTitle: 'Sign in',
+    registerTitle: 'Create account',
+    login: 'Login',
+    register: 'Register',
+    logout: 'Log out',
+    goToRegister: 'Create an account',
+    goToLogin: 'I already have an account',
+    password: 'Password',
+    fullName: 'Full name',
+    loginRequired: 'You must sign in to continue.',
     heroEyebrow: 'Real hotels from the API',
     heroTitle: 'Search, compare and book',
     destination: 'Destination',
@@ -153,7 +204,6 @@ const copy = {
     myReservations: 'My reservations',
     cancel: 'Cancel reservation',
     cancelled: 'Reservation cancelled',
-    qaLoginError: 'Automatic QA login could not be completed.',
     validationReservationHolder: 'Enter the reservation holder.',
     validationBuyerName: 'Enter the buyer name.',
     validationEmail: 'Enter the email address.',
@@ -173,7 +223,23 @@ const copy = {
     priceAsc: 'Lowest price',
     priceDesc: 'Highest price',
     ratingDesc: 'Top rated',
-    footer: 'Frontend connected to API · realistic data · Booking-like flow · data-testid for QA automation'
+    footer: 'Frontend connected to API · realistic data · Booking-like flow · data-testid for QA automation',
+    applyFilters: 'Apply filters',
+    hideFilters: 'Hide filters',
+    minRating: 'Minimum rating',
+    minPrice: 'Minimum price',
+    maxPrice: 'Maximum price',
+    propertyType: 'Property type',
+    amenity: 'Amenity',
+    all: 'All',
+    hotelType: 'Hotel',
+    resortType: 'Resort',
+    businessType: 'Business hotel',
+    apartHotelType: 'Apart-hotel',
+    wifiAmenity: 'Wi-Fi',
+    breakfastAmenity: 'Breakfast',
+    beachAmenity: 'Beach',
+    poolAmenity: 'Pool',
   }
 };
 
@@ -207,8 +273,8 @@ function Card({ children, className = '', ...props }) {
 function Amenities({ amenities = [] }) {
   const iconMap = {
     'Wi-Fi': <Wifi size={14} />,
-    'Desayuno': <Coffee size={14} />,
-    'Playa': <Waves size={14} />
+    Desayuno: <Coffee size={14} />,
+    Playa: <Waves size={14} />
   };
 
   return (
@@ -220,6 +286,133 @@ function Amenities({ amenities = [] }) {
         </span>
       ))}
     </div>
+  );
+}
+
+function AuthCard({ title, children }) {
+  return (
+    <Shell>
+      <Card className="card-body auth-card">
+        <h2>{title}</h2>
+        {children}
+      </Card>
+    </Shell>
+  );
+}
+
+function LoginView({ t, onLogin, onGoRegister, error }) {
+  const [form, setForm] = useState({
+    email: '',
+    password: ''
+  });
+
+  return (
+    <AuthCard title={t.loginTitle}>
+      <div className="form-stack">
+        <input
+          className="control"
+          placeholder={t.email}
+          value={form.email}
+          onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
+          data-testid="login_email_input"
+        />
+
+        <input
+          className="control"
+          type="password"
+          placeholder={t.password}
+          value={form.password}
+          onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
+          data-testid="login_password_input"
+        />
+      </div>
+
+      {error ? <p className="error-message">{error}</p> : null}
+
+      <button
+        className="primary-button"
+        onClick={() => onLogin(form)}
+        data-testid="login_button"
+      >
+        {t.login}
+      </button>
+
+      <button
+        className="secondary-button auth-link-button"
+        onClick={onGoRegister}
+        type="button"
+        data-testid="go_to_register_button"
+      >
+        {t.goToRegister}
+      </button>
+    </AuthCard>
+  );
+}
+
+function RegisterView({ t, onRegister, onGoLogin, error }) {
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    phone: ''
+  });
+
+  return (
+    <AuthCard title={t.registerTitle}>
+      <div className="form-stack">
+        <input
+          className="control"
+          placeholder={t.fullName}
+          value={form.name}
+          onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
+          data-testid="register_name_input"
+        />
+
+        <input
+          className="control"
+          placeholder={t.email}
+          value={form.email}
+          onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
+          data-testid="register_email_input"
+        />
+
+        <input
+          className="control"
+          type="password"
+          placeholder={t.password}
+          value={form.password}
+          onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
+          data-testid="register_password_input"
+        />
+
+        <input
+          className="control"
+          placeholder={t.phone}
+          value={form.phone}
+          onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))}
+          data-testid="register_phone_input"
+        />
+      </div>
+
+      {error ? <p className="error-message">{error}</p> : null}
+
+      <button
+        className="primary-button"
+        onClick={() => onRegister(form)}
+        data-testid="register_button"
+      >
+        {t.register}
+      </button>
+
+      <button
+        className="secondary-button auth-link-button"
+        onClick={onGoLogin}
+        type="button"
+        data-testid="go_to_login_button"
+      >
+        {t.goToLogin}
+      </button>
+    </AuthCard>
   );
 }
 
@@ -250,6 +443,7 @@ function SearchView({ t, criteria, setCriteria, destinations, onSearch, error })
               onChange={(value) => setCriteria((prev) => ({ ...prev, checkIn: value }))}
               testId="checkin_input"
             />
+
             <DatePickerField
               label={t.checkOut}
               value={criteria.checkOut}
@@ -269,6 +463,7 @@ function SearchView({ t, criteria, setCriteria, destinations, onSearch, error })
               decrementTestId="adults_decrease"
               incrementTestId="adults_increase"
             />
+
             <Stepper
               label={t.children}
               value={criteria.children}
@@ -278,6 +473,7 @@ function SearchView({ t, criteria, setCriteria, destinations, onSearch, error })
               decrementTestId="children_decrease"
               incrementTestId="children_increase"
             />
+
             <Stepper
               label={t.rooms}
               value={criteria.rooms}
@@ -291,7 +487,7 @@ function SearchView({ t, criteria, setCriteria, destinations, onSearch, error })
 
           {error ? <p className="error-message">{error}</p> : null}
 
-          <button className="primary-button" data-testid="search_hotels_button" onClick={onSearch}>
+          <button className="primary-button" data-testid="search_hotels_button"onClick={() => onSearch()}>
             {t.searchHotels}
           </button>
         </div>
@@ -300,16 +496,51 @@ function SearchView({ t, criteria, setCriteria, destinations, onSearch, error })
   );
 }
 
-function ResultsView({ t, criteria, results, onBack, onSelectHotel, sortBy, setSortBy }) {
+function ResultsView({
+  t,
+  criteria,
+  results,
+  onBack,
+  onSelectHotel,
+  sortBy,
+  setSortBy,
+  currency,
+  language,
+  filters,
+  setFilters,
+  onApplyFilters
+}) {
+  const [showFilters, setShowFilters] = useState(false);
+
   return (
     <Shell>
       <div className="toolbar">
         <BackButton onClick={onBack} />
+
         <div className="toolbar-right">
+          <button
+            type="button"
+            className="secondary-button filter-toggle-button"
+            onClick={() => setShowFilters((prev) => !prev)}
+            data-testid="filters_button"
+          >
+            <SlidersHorizontal size={16} />
+            {showFilters ? t.hideFilters : t.filters}
+          </button>
+
           <label className="sort-control">
             <SlidersHorizontal size={16} />
             <span>{t.sortBy}</span>
-            <select className="control" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+
+            <select
+              className="control"
+              value={sortBy}
+              onChange={(event) => {
+                setSortBy(event.target.value);
+                onApplyFilters(event.target.value);
+              }}
+              data-testid="sort_by_select"
+            >
               <option value="price_asc">{t.priceAsc}</option>
               <option value="price_desc">{t.priceDesc}</option>
               <option value="rating_desc">{t.ratingDesc}</option>
@@ -318,8 +549,96 @@ function ResultsView({ t, criteria, results, onBack, onSelectHotel, sortBy, setS
         </div>
       </div>
 
+      {showFilters ? (
+        <Card className="card-body filters-panel">
+          <div className="grid-3">
+            <label>
+              <span className="input-label">{t.minRating}</span>
+              <select
+                className="control"
+                value={filters.minRating}
+                onChange={(event) => setFilters((prev) => ({ ...prev, minRating: event.target.value }))}
+                data-testid="min_rating_filter"
+              >
+                <option value="">{t.all}</option>
+                <option value="8">8.0+</option>
+                <option value="8.5">8.5+</option>
+                <option value="9">9.0+</option>
+              </select>
+            </label>
+
+            <label>
+              <span className="input-label">{t.minPrice}</span>
+              <input
+                className="control"
+                type="number"
+                value={filters.minPrice}
+                onChange={(event) => setFilters((prev) => ({ ...prev, minPrice: event.target.value }))}
+                data-testid="min_price_filter"
+              />
+            </label>
+
+            <label>
+              <span className="input-label">{t.maxPrice}</span>
+              <input
+                className="control"
+                type="number"
+                value={filters.maxPrice}
+                onChange={(event) => setFilters((prev) => ({ ...prev, maxPrice: event.target.value }))}
+                data-testid="max_price_filter"
+              />
+            </label>
+          </div>
+
+          <div className="grid-2 filters-second-row">
+            <label>
+              <span className="input-label">{t.propertyType}</span>
+              <select
+                className="control"
+                value={filters.propertyType}
+                onChange={(event) => setFilters((prev) => ({ ...prev, propertyType: event.target.value }))}
+                data-testid="property_type_filter"
+              >
+                <option value="">{t.all}</option>
+                <option value="Hotel">{t.hotelType}</option>
+                <option value="Resort">{t.resortType}</option>
+                <option value="Business hotel">{t.businessType}</option>
+                <option value="Apart-hotel">{t.apartHotelType}</option>
+              </select>
+            </label>
+
+            <label>
+              <span className="input-label">{t.amenity}</span>
+              <select
+                className="control"
+                value={filters.amenity}
+                onChange={(event) => setFilters((prev) => ({ ...prev, amenity: event.target.value }))}
+                data-testid="amenity_filter"
+              >
+                <option value="">{t.all}</option>
+                <option value="Wi-Fi">{t.wifiAmenity}</option>
+                <option value="Desayuno">{t.breakfastAmenity}</option>
+                <option value="Playa">{t.beachAmenity}</option>
+                <option value="Alberca">{t.poolAmenity}</option>
+              </select>
+            </label>
+          </div>
+
+          <button
+            type="button"
+            className="primary-button"
+            onClick={() => onApplyFilters(sortBy)}
+            data-testid="apply_filters_button"
+          >
+            {t.applyFilters}
+          </button>
+        </Card>
+      ) : null}
+
       <p className="criteria-line">
-        {criteria.destination} · {criteria.checkIn} a {criteria.checkOut} · {criteria.adults} {t.adults.toLowerCase()} · {criteria.children} {t.children.toLowerCase()} · {criteria.rooms} {t.rooms.toLowerCase()}
+        {criteria.destination} · {criteria.checkIn} a {criteria.checkOut} · {criteria.adults}{' '}
+        {t.adults.toLowerCase()} · {criteria.children} {t.children.toLowerCase()} · {criteria.rooms}{' '}
+        {t.rooms.toLowerCase()}
       </p>
 
       {results.length === 0 ? (
@@ -329,15 +648,21 @@ function ResultsView({ t, criteria, results, onBack, onSelectHotel, sortBy, setS
           {results.map((hotel) => (
             <Card key={hotel.hotelId} className="result-card">
               <img src={hotel.imageUrl} alt={hotel.hotelName} className="hotel-image" />
+
               <div className="result-content">
                 <div className="result-top">
                   <div>
                     <h3>{hotel.hotelName}</h3>
-                    <p className="muted"><MapPin size={14} /> {hotel.city}, {hotel.country}</p>
+                    <p className="muted">
+                      <MapPin size={14} /> {hotel.city}, {hotel.country}
+                    </p>
                     <Amenities amenities={hotel.amenities} />
                   </div>
+
                   <div className="rating-box">
-                    <span><Star size={14} /> {hotel.rating}</span>
+                    <span>
+                      <Star size={14} /> {hotel.rating}
+                    </span>
                   </div>
                 </div>
 
@@ -346,9 +671,14 @@ function ResultsView({ t, criteria, results, onBack, onSelectHotel, sortBy, setS
                 <div className="result-bottom">
                   <div>
                     <small>Desde</small>
-                    <div className="price">{formatMoney(hotel.minRate, hotel.currency, 'es')}</div>
+                    <div className="price">{formatMoney(hotel.minRate, currency, language)}</div>
                   </div>
-                  <button className="primary-button" onClick={() => onSelectHotel(hotel)} data-testid={`select_hotel_${hotel.hotelId}`}>
+
+                  <button
+                    className="primary-button"
+                    onClick={() => onSelectHotel(hotel)}
+                    data-testid={`select_hotel_${hotel.hotelId}`}
+                  >
                     {t.viewRooms}
                   </button>
                 </div>
@@ -367,11 +697,15 @@ function DetailView({ t, hotel, rooms, onBack, onSelectRoom, currency, language 
   return (
     <Shell>
       <BackButton onClick={onBack} />
+
       <Card className="result-card">
         <img src={hotel.imageUrl} alt={hotel.hotelName} className="hotel-image" />
+
         <div className="result-content">
           <h2>{hotel.hotelName}</h2>
-          <p className="muted"><MapPin size={14} /> {hotel.city}, {hotel.country}</p>
+          <p className="muted">
+            <MapPin size={14} /> {hotel.city}, {hotel.country}
+          </p>
           <Amenities amenities={hotel.amenities} />
           <p className="hotel-description">{hotel.description}</p>
         </div>
@@ -381,11 +715,18 @@ function DetailView({ t, hotel, rooms, onBack, onSelectRoom, currency, language 
         {rooms.map((room) => (
           <Card key={room.roomTypeId} className="card-body">
             <h3>{room.name}</h3>
-            <p>{room.bedType} · {room.boardPlan}</p>
+            <p>
+              {room.bedType} · {room.boardPlan}
+            </p>
             <p>{room.cancellationPolicy}</p>
-            <p>{room.capacityAdults} {t.adults.toLowerCase()} · {room.capacityChildren} {t.children.toLowerCase()}</p>
+            <p>
+              {room.capacityAdults} {t.adults.toLowerCase()} · {room.capacityChildren}{' '}
+              {t.children.toLowerCase()}
+            </p>
+
             <div className="result-bottom">
               <div className="price">{formatMoney(room.nightlyRate, currency, language)}</div>
+
               <button className="primary-button" onClick={() => onSelectRoom(room)}>
                 {t.screens.checkout}
               </button>
@@ -458,6 +799,7 @@ function CheckoutView({ setScreen, guests, checkIn, checkOut, hotel, room, token
 
   async function pay() {
     const validationError = validateForm();
+
     if (validationError) {
       setError(validationError);
       return;
@@ -495,21 +837,34 @@ function CheckoutView({ setScreen, guests, checkIn, checkOut, hotel, room, token
         <h2>{t.checkoutTitle}</h2>
 
         <div className="info-list">
-          <p><b>{t.hotel}:</b> {hotel.hotelName}</p>
-          <p><b>{t.room}:</b> {room.name}</p>
-          <p><b>{t.dates}:</b> {checkIn} – {checkOut}</p>
-          <p><b>{t.guests}:</b> {guests.adults}, {guests.children}, {guests.rooms}</p>
+          <p>
+            <b>{t.hotel}:</b> {hotel.hotelName}
+          </p>
+          <p>
+            <b>{t.room}:</b> {room.name}
+          </p>
+          <p>
+            <b>{t.dates}:</b> {checkIn} – {checkOut}
+          </p>
+          <p>
+            <b>{t.guests}:</b> {guests.adults} {t.adults.toLowerCase()}, {guests.children}{' '}
+            {t.children.toLowerCase()}, {guests.rooms} {t.rooms.toLowerCase()}
+          </p>
         </div>
 
         <div className="price-box">
           <div>
-            <span>{nights} {t.nights}</span>
+            <span>
+              {nights} {t.nights}
+            </span>
             <b>{formatMoney(subtotal, currency, language)}</b>
           </div>
+
           <div>
             <span>{t.taxes}</span>
             <b>{formatMoney(taxes, currency, language)}</b>
           </div>
+
           <div className="total">
             <span>{t.total}</span>
             <b data-testid="checkout_total_amount">{formatMoney(total, currency, language)}</b>
@@ -523,39 +878,137 @@ function CheckoutView({ setScreen, guests, checkIn, checkOut, hotel, room, token
         <div className="checkout-section">
           <h3>{t.reservationHolderSection}</h3>
           <div className="form-stack">
-            <input className="control" placeholder={t.reservationHolder} value={buyer.reservationHolder} onChange={(e) => updateBuyer('reservationHolder', e.target.value)} />
+            <input
+              className="control"
+              placeholder={t.reservationHolder}
+              value={buyer.reservationHolder}
+              onChange={(event) => updateBuyer('reservationHolder', event.target.value)}
+              data-testid="reservation_holder_input"
+            />
           </div>
         </div>
 
         <div className="checkout-section">
           <h3>{t.buyerDataSection}</h3>
           <div className="form-stack">
-            <input className="control" placeholder={t.buyerName} value={buyer.buyerName} onChange={(e) => updateBuyer('buyerName', e.target.value)} />
-            <input className="control" placeholder={t.email} value={buyer.email} onChange={(e) => updateBuyer('email', e.target.value)} />
-            <input className="control" placeholder={t.phone} value={buyer.phone} onChange={(e) => updateBuyer('phone', e.target.value)} />
+            <input
+              className="control"
+              placeholder={t.buyerName}
+              value={buyer.buyerName}
+              onChange={(event) => updateBuyer('buyerName', event.target.value)}
+              data-testid="buyer_name_input"
+            />
+
+            <input
+              className="control"
+              placeholder={t.email}
+              value={buyer.email}
+              onChange={(event) => updateBuyer('email', event.target.value)}
+              data-testid="buyer_email_input"
+            />
+
+            <input
+              className="control"
+              placeholder={t.phone}
+              value={buyer.phone}
+              onChange={(event) => updateBuyer('phone', event.target.value)}
+              data-testid="buyer_phone_input"
+            />
           </div>
         </div>
 
         <div className="checkout-section">
           <h3>{t.billingAddressSection}</h3>
           <div className="form-stack">
-            <input className="control" placeholder={t.street} value={buyer.street} onChange={(e) => updateBuyer('street', e.target.value)} />
-            <input className="control" placeholder={t.city} value={buyer.city} onChange={(e) => updateBuyer('city', e.target.value)} />
-            <input className="control" placeholder={t.state} value={buyer.state} onChange={(e) => updateBuyer('state', e.target.value)} />
-            <input className="control" placeholder={t.postalCode} value={buyer.postalCode} onChange={(e) => updateBuyer('postalCode', e.target.value)} />
-            <input className="control" placeholder={t.country} value={buyer.country} onChange={(e) => updateBuyer('country', e.target.value)} />
+            <input
+              className="control"
+              placeholder={t.street}
+              value={buyer.street}
+              onChange={(event) => updateBuyer('street', event.target.value)}
+              data-testid="billing_street_input"
+            />
+
+            <input
+              className="control"
+              placeholder={t.city}
+              value={buyer.city}
+              onChange={(event) => updateBuyer('city', event.target.value)}
+              data-testid="billing_city_input"
+            />
+
+            <input
+              className="control"
+              placeholder={t.state}
+              value={buyer.state}
+              onChange={(event) => updateBuyer('state', event.target.value)}
+              data-testid="billing_state_input"
+            />
+
+            <input
+              className="control"
+              placeholder={t.postalCode}
+              value={buyer.postalCode}
+              onChange={(event) => updateBuyer('postalCode', event.target.value)}
+              data-testid="billing_postal_code_input"
+            />
+
+            <input
+              className="control"
+              placeholder={t.country}
+              value={buyer.country}
+              onChange={(event) => updateBuyer('country', event.target.value)}
+              data-testid="billing_country_input"
+            />
           </div>
         </div>
 
         <div className="checkout-section">
           <h3>{t.paymentDataSection}</h3>
           <div className="form-stack">
-            <input className="control" placeholder={t.cardholderName} value={buyer.cardholderName} onChange={(e) => updateBuyer('cardholderName', e.target.value)} />
-            <input className="control" placeholder={t.cardNumber} value={buyer.cardNumber} onChange={(e) => updateBuyer('cardNumber', e.target.value.replace(/[^\d\s]/g, ''))} maxLength={19} />
+            <input
+              className="control"
+              placeholder={t.cardholderName}
+              value={buyer.cardholderName}
+              onChange={(event) => updateBuyer('cardholderName', event.target.value)}
+              data-testid="cardholder_name_input"
+            />
+
+            <input
+              className="control"
+              placeholder={t.cardNumber}
+              value={buyer.cardNumber}
+              onChange={(event) => updateBuyer('cardNumber', event.target.value.replace(/[^\d\s]/g, ''))}
+              maxLength={19}
+              data-testid="card_number_input"
+            />
+
             <div className="grid-3">
-              <input className="control" placeholder={t.expiryMonth} value={buyer.expiryMonth} onChange={(e) => updateBuyer('expiryMonth', e.target.value.replace(/\D/g, ''))} maxLength={2} />
-              <input className="control" placeholder={t.expiryYear} value={buyer.expiryYear} onChange={(e) => updateBuyer('expiryYear', e.target.value.replace(/\D/g, ''))} maxLength={4} />
-              <input className="control" placeholder={t.cvv} value={buyer.cvv} onChange={(e) => updateBuyer('cvv', e.target.value.replace(/\D/g, ''))} maxLength={4} />
+              <input
+                className="control"
+                placeholder={t.expiryMonth}
+                value={buyer.expiryMonth}
+                onChange={(event) => updateBuyer('expiryMonth', event.target.value.replace(/\D/g, ''))}
+                maxLength={2}
+                data-testid="expiry_month_input"
+              />
+
+              <input
+                className="control"
+                placeholder={t.expiryYear}
+                value={buyer.expiryYear}
+                onChange={(event) => updateBuyer('expiryYear', event.target.value.replace(/\D/g, ''))}
+                maxLength={4}
+                data-testid="expiry_year_input"
+              />
+
+              <input
+                className="control"
+                placeholder={t.cvv}
+                value={buyer.cvv}
+                onChange={(event) => updateBuyer('cvv', event.target.value.replace(/\D/g, ''))}
+                maxLength={4}
+                data-testid="cvv_input"
+              />
             </div>
           </div>
         </div>
@@ -587,7 +1040,9 @@ function ConfirmationView({ t, confirmation, onGoReservations }) {
         <div className="confirmation-box">
           {current.icon}
           <h2>{current.text}</h2>
-          <p>Locator: <b>{confirmation.locator}</b></p>
+          <p>
+            Locator: <b>{confirmation.locator}</b>
+          </p>
           <p>ID: {confirmation.reservationId}</p>
         </div>
 
@@ -599,7 +1054,7 @@ function ConfirmationView({ t, confirmation, onGoReservations }) {
   );
 }
 
-function ReservationsView({ t, reservations, onRefresh, token, setReservations }) {
+function ReservationsView({ t, reservations, onRefresh, token, currency, language }) {
   async function handleCancel(reservationId) {
     await cancelReservation(token, reservationId, 'Cambio de plan');
     await onRefresh();
@@ -616,9 +1071,11 @@ function ReservationsView({ t, reservations, onRefresh, token, setReservations }
           <Card key={reservation.reservationId} className="card-body">
             <h3>{reservation.hotelName}</h3>
             <p>{reservation.roomName}</p>
-            <p>{reservation.checkIn} → {reservation.checkOut}</p>
+            <p>
+              {reservation.checkIn} → {reservation.checkOut}
+            </p>
             <p>{reservation.status}</p>
-            <p>{formatMoney(reservation.totalAmount, reservation.currency, 'es')}</p>
+            <p>{formatMoney(reservation.totalAmount, currency || reservation.currency, language)}</p>
 
             {reservation.status !== 'cancelled' ? (
               <button className="secondary-button" onClick={() => handleCancel(reservation.reservationId)}>
@@ -635,10 +1092,21 @@ function ReservationsView({ t, reservations, onRefresh, token, setReservations }
 }
 
 export default function App() {
-  const [screen, setScreen] = useState('search');
+  const [screen, setScreen] = useState(() => {
+    const savedToken = localStorage.getItem('token');
+    return savedToken ? 'search' : 'login';
+  });
+
   const [language, setLanguage] = useState('es');
   const [currency, setCurrency] = useState('MXN');
-  const [token, setToken] = useState('');
+
+  const [token, setToken] = useState(() => localStorage.getItem('token') || '');
+
+  const [currentUser, setCurrentUser] = useState(() => {
+    const raw = localStorage.getItem('user');
+    return raw ? JSON.parse(raw) : null;
+  });
+
   const [authError, setAuthError] = useState('');
   const [destinations, setDestinations] = useState([]);
   const [results, setResults] = useState([]);
@@ -649,6 +1117,13 @@ export default function App() {
   const [reservations, setReservations] = useState([]);
   const [searchError, setSearchError] = useState('');
   const [sortBy, setSortBy] = useState('price_asc');
+  const [filters, setFilters] = useState({
+  minRating: '',
+  minPrice: '',
+  maxPrice: '',
+  propertyType: '',
+  amenity: ''
+});
 
   const [criteria, setCriteria] = useState({
     destination: '',
@@ -662,61 +1137,32 @@ export default function App() {
   const t = useMemo(() => copy[language], [language]);
 
   const enabledScreens = {
-    search: true,
-    results: results.length >= 0,
-    detail: Boolean(hotel),
-    checkout: Boolean(selectedRoom),
-    confirmation: Boolean(confirmation),
-    reservations: true
+    search: Boolean(token),
+    results: Boolean(token) && results.length >= 0,
+    detail: Boolean(token) && Boolean(hotel),
+    checkout: Boolean(token) && Boolean(selectedRoom),
+    confirmation: Boolean(token) && Boolean(confirmation),
+    reservations: Boolean(token)
   };
 
   useEffect(() => {
-    fetchDestinations().then((data) => {
-      setDestinations(data.destinations);
-      if (data.destinations.length > 0) {
-        setCriteria((prev) => ({
-          ...prev,
-          destination: prev.destination || data.destinations[0].city
-        }));
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    loginQa()
-      .then((data) => setToken(data.token))
-      .catch(() => setAuthError(copy[language].qaLoginError));
-  }, [language]);
-
-  async function handleSearch() {
-    try {
-      setSearchError('');
-      const data = await searchHotels({ ...criteria, sortBy });
-      setResults(data.results);
-      setScreen('results');
-    } catch (error) {
-      setSearchError(error.message);
-    }
-  }
-
-  async function handleSelectHotel(selectedHotel) {
-    setHotel(selectedHotel);
-    const data = await fetchAvailability(selectedHotel.hotelId, {
-      checkIn: criteria.checkIn,
-      checkOut: criteria.checkOut,
-      adults: criteria.adults,
-      children: criteria.children,
-      rooms: criteria.rooms
-    });
-    setRooms(data.rooms);
-    setScreen('detail');
-  }
-
-  async function loadReservations() {
     if (!token) return;
-    const data = await fetchReservations(token);
-    setReservations(data.reservations);
-  }
+
+    fetchDestinations()
+      .then((data) => {
+        setDestinations(data.destinations);
+
+        if (data.destinations.length > 0) {
+          setCriteria((prev) => ({
+            ...prev,
+            destination: prev.destination || data.destinations[0].city
+          }));
+        }
+      })
+      .catch((error) => {
+        setSearchError(error.message);
+      });
+  }, [token]);
 
   useEffect(() => {
     if (screen === 'reservations' && token) {
@@ -724,41 +1170,207 @@ export default function App() {
     }
   }, [screen, token]);
 
+  async function handleLogin(form) {
+    try {
+      setAuthError('');
+
+      const data = await loginUser(form);
+
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      setToken(data.token);
+      setCurrentUser(data.user);
+      setScreen('search');
+    } catch (error) {
+      setAuthError(error.message);
+    }
+  }
+
+  async function handleRegister(form) {
+    try {
+      setAuthError('');
+
+      const data = await registerUser(form);
+
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      setToken(data.token);
+      setCurrentUser(data.user);
+      setScreen('search');
+    } catch (error) {
+      setAuthError(error.message);
+    }
+  }
+
+  function handleLogout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    setToken('');
+    setCurrentUser(null);
+    setReservations([]);
+    setConfirmation(null);
+    setSelectedRoom(null);
+    setHotel(null);
+    setRooms([]);
+    setResults([]);
+    setSearchError('');
+    setAuthError('');
+    setScreen('login');
+  }
+
+  async function handleSearch(customSortBy = sortBy) {
+  try {
+    setSearchError('');
+
+    const safeSortBy =
+      typeof customSortBy === 'string'
+        ? customSortBy
+        : sortBy;
+
+    const payload = {
+      ...criteria,
+      sortBy: safeSortBy
+    };
+
+    if (filters.minRating) payload.minRating = Number(filters.minRating);
+    if (filters.minPrice) payload.minPrice = Number(filters.minPrice);
+    if (filters.maxPrice) payload.maxPrice = Number(filters.maxPrice);
+    if (filters.propertyType) payload.propertyType = filters.propertyType;
+    if (filters.amenity) payload.amenity = filters.amenity;
+
+    const data = await searchHotels(payload);
+
+    setResults(data.results);
+    setScreen('results');
+  } catch (error) {
+    setSearchError(error.message);
+  }
+}
+
+  async function handleSelectHotel(selectedHotel) {
+    try {
+      setSearchError('');
+      setHotel(selectedHotel);
+      setSelectedRoom(null);
+      setRooms([]);
+
+      const data = await fetchAvailability(selectedHotel.hotelId, {
+        checkIn: criteria.checkIn,
+        checkOut: criteria.checkOut,
+        adults: criteria.adults,
+        children: criteria.children,
+        rooms: criteria.rooms
+      });
+
+      setRooms(data.rooms);
+      setScreen('detail');
+    } catch (error) {
+      setSearchError(error.message);
+    }
+  }
+
+  async function loadReservations() {
+    if (!token) return;
+
+    const data = await fetchReservations(token);
+    setReservations(data.reservations);
+  }
+
   return (
     <div className="app">
-      <Header screen={screen} setScreen={setScreen} enabledScreens={enabledScreens} t={t} />
+      {token ? (
+        <>
+          <Header screen={screen} setScreen={setScreen} enabledScreens={enabledScreens} t={t} />
 
-      <LocaleSelector
-        language={language}
-        setLanguage={setLanguage}
-        currency={currency}
-        setCurrency={setCurrency}
-      />
+          <div className="topbar-actions">
+            <LocaleSelector
+              language={language}
+              setLanguage={setLanguage}
+              currency={currency}
+              setCurrency={setCurrency}
+            />
 
-      {screen === 'search' && (
+            <div className="session-box">
+              {currentUser ? <span className="session-user">{currentUser.name}</span> : null}
+
+              <button
+                className="secondary-button logout-button"
+                onClick={handleLogout}
+                type="button"
+                data-testid="logout_button"
+              >
+                {t.logout}
+              </button>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="topbar-actions">
+          <LocaleSelector
+            language={language}
+            setLanguage={setLanguage}
+            currency={currency}
+            setCurrency={setCurrency}
+          />
+        </div>
+      )}
+
+      {screen === 'login' && (
+        <LoginView
+          t={t}
+          onLogin={handleLogin}
+          onGoRegister={() => {
+            setAuthError('');
+            setScreen('register');
+          }}
+          error={authError}
+        />
+      )}
+
+      {screen === 'register' && (
+        <RegisterView
+          t={t}
+          onRegister={handleRegister}
+          onGoLogin={() => {
+            setAuthError('');
+            setScreen('login');
+          }}
+          error={authError}
+        />
+      )}
+
+      {token && screen === 'search' && (
         <SearchView
           t={t}
           criteria={criteria}
           setCriteria={setCriteria}
           destinations={destinations}
           onSearch={handleSearch}
-          error={authError || searchError}
+          error={searchError}
         />
       )}
 
-      {screen === 'results' && (
+      {token && screen === 'results' && (
         <ResultsView
-          t={t}
-          criteria={criteria}
-          results={results}
-          onBack={() => setScreen('search')}
-          onSelectHotel={handleSelectHotel}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-        />
+        t={t}
+        criteria={criteria}
+        results={results}
+        onBack={() => setScreen('search')}
+        onSelectHotel={handleSelectHotel}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        currency={currency}
+        language={language}
+        filters={filters}
+        setFilters={setFilters}
+        onApplyFilters={handleSearch}
+      />
       )}
 
-      {screen === 'detail' && (
+      {token && screen === 'detail' && (
         <DetailView
           t={t}
           hotel={hotel}
@@ -773,7 +1385,7 @@ export default function App() {
         />
       )}
 
-      {screen === 'checkout' && (
+      {token && screen === 'checkout' && (
         <CheckoutView
           setScreen={setScreen}
           guests={criteria}
@@ -792,7 +1404,7 @@ export default function App() {
         />
       )}
 
-      {screen === 'confirmation' && (
+      {token && screen === 'confirmation' && (
         <ConfirmationView
           t={t}
           confirmation={confirmation}
@@ -800,13 +1412,14 @@ export default function App() {
         />
       )}
 
-      {screen === 'reservations' && (
+      {token && screen === 'reservations' && (
         <ReservationsView
           t={t}
           reservations={reservations}
           onRefresh={loadReservations}
           token={token}
-          setReservations={setReservations}
+          currency={currency}
+          language={language}
         />
       )}
 

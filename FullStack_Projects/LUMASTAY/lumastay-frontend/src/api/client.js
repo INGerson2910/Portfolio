@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://192.168.1.111:4000/api/v1';
+const API_BASE_URL = 'http://192.168.3.8:4000/api/v1';
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
@@ -23,13 +23,17 @@ async function request(path, options = {}) {
   return data;
 }
 
-export async function loginQa() {
+export async function loginUser(payload) {
   return request('/auth/login', {
     method: 'POST',
-    body: JSON.stringify({
-      email: 'qa@lumastay.app',
-      password: 'Password123!'
-    })
+    body: JSON.stringify(payload)
+  });
+}
+
+export async function registerUser(payload) {
+  return request('/auth/register', {
+    method: 'POST',
+    body: JSON.stringify(payload)
   });
 }
 

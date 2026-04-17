@@ -408,3 +408,59 @@ select {
     min-height: 180px;
   }
 }
+
+.auth-card {
+  max-width: 560px;
+  margin: 32px auto 0;
+}
+
+.topbar-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px 16px;
+  flex-wrap: wrap;
+}
+
+.session-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.session-user {
+  color: #64748b;
+  font-weight: 800;
+}
+
+.logout-button,
+.auth-link-button {
+  width: auto;
+}
+
+.auth-link-button {
+  margin-top: 12px;
+}
+
+.filter-toggle-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filters-panel {
+  margin-bottom: 18px;
+}
+
+.filters-second-row {
+  margin-top: 14px;
+}
+
+.input-label {
+  display: block;
+  color: #64748b;
+  font-weight: 800;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
