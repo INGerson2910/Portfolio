@@ -7,10 +7,14 @@ class Settings(BaseSettings):
     app_env: str = "local"
     app_port: int = 8000
 
-    ollama_base_url: str = "http://localhost:11434"
-    ollama_model: str = "llama3.2:3b"
+    llm_base_url: str = "http://127.0.0.1:8080"
+    llm_model: str = "Qwen_Qwen3.5-4B-Q4_K_M.gguf"
+    llm_timeout_seconds: int = 300
+    llm_max_tokens: int = 4096
+    llm_temperature: float = 0.15
 
     max_input_chars: int = 50000
+    min_test_cases: int = 12
 
     model_config = SettingsConfigDict(
         env_file=".env",

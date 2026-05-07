@@ -1,0 +1,55 @@
+<think>
+
+</think>
+
+{
+  "feature_name": "User registration",
+  "test_plan_summary": "Validates successful registration flow, duplicate email handling, password length validation, and invalid email format rejection.",
+  "assumptions": [
+    "Email must be unique in the system.",
+    "Password must be at least 8 characters long.",
+    "Registration endpoint is POST /api/v1/auth/register.",
+    "Frontend persists token and redirects to Search screen on success."
+  ],
+  "coverage_areas": [
+    "Happy path registration with valid data",
+    "Duplicate email conflict handling",
+    "Password length validation",
+    "Invalid email format rejection"
+  ],
+  "warnings": [
+    "Token format not explicitly defined in requirements.",
+    "Redirection mechanism depends on frontend implementation.",
+    "Email uniqueness check assumes database consistency."
+  ],
+  "test_cases": [
+    {
+      "tc_id": "TC-001",
+      "test_type": "Functional",
+      "description": "Verify successful user registration with valid credentials.",
+      "steps": "1. Navigate to registration screen.\n2. Submit POST request to /api/v1/auth/register with email 'new.user@lumastay.app' and password 'SecurePass123'.\n3. Verify response status is 201.\n4. Verify response body contains non-empty token and user profile.\n5. Verify frontend persists token and redirects to Search screen.",
+      "test_data_format": "form_fields",
+      "test_data": "email=new.user@lumastay.app&password=SecurePass123",
+      "expected_result": "Status 201, token present, user profile present, redirect to Search screen.",
+      "pre_conditions": "Email 'new.user@lumastay.app' is not registered.",
+      "automatable": "yes",
+      "pass_field": "status_code==201",
+      "actual_result": ""
+    },
+    {
+      "tc_id": "TC-002",
+      "test_type": "Negative",
+      "description": "Verify registration fails when email already exists.",
+      "steps": "1. Ensure email 'qa@lumastay.app' is already registered.\n2. Submit registration form with email 'qa@lumastay.app' and password 'SecurePass123'.\n3. Verify response status is 409.\n4. Verify error code is 'AUTH-409'.\n5. Verify no new user is created.",
+      "test_data_format": "form_fields",
+      "test_data": "email=qa@lumastay.app&password=SecurePass123",
+      "expected_result": "Status 409, error code AUTH-409, no user created.",
+      "pre_conditions": "Email 'qa@lumastay.app' exists in database.",
+      "automatable": "yes",
+      "pass_field": "status_code==409",
+      "actual_result": ""
+    },
+    {
+      "tc_id": "TC-003",
+      "test_type": "Validation",
+      "description":

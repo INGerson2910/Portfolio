@@ -1,0 +1,36 @@
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "<think>\n\n</think>\n\n{\n  \"feature_name\": \"User registration\",\n  \"test_plan_summary\": \"Validates successful registration flow, duplicate email handling, password length validation, and invalid email format rejection.\",\n  \"assumptions\": [\n    \"Email must be unique in the system.\",\n    \"Password must be at least 8 characters long.\",\n    \"Registration endpoint is POST /api/v1/auth/register.\",\n    \"Frontend persists token and redirects to Search screen on success.\"\n  ],\n  \"coverage_areas\": [\n    \"Happy path registration with valid data\",\n    \"Duplicate email conflict handling\",\n    \"Password length validation\",\n    \"Invalid email format rejection\"\n  ],\n  \"warnings\": [\n    \"Token format not explicitly defined in requirements.\",\n    \"Redirection mechanism depends on frontend implementation.\",\n    \"Email uniqueness check assumes database consistency.\"\n  ],\n  \"test_cases\": [\n    {\n      \"tc_id\": \"TC-001\",\n      \"test_type\": \"Functional\",\n      \"description\": \"Verify successful user registration with valid credentials.\",\n      \"steps\": \"1. Navigate to registration screen.\\n2. Submit POST request to /api/v1/auth/register with email 'new.user@lumastay.app' and password 'SecurePass123'.\\n3. Verify response status is 201.\\n4. Verify response body contains non-empty token and user profile.\\n5. Verify frontend persists token and redirects to Search screen.\",\n      \"test_data_format\": \"form_fields\",\n      \"test_data\": \"email=new.user@lumastay.app&password=SecurePass123\",\n      \"expected_result\": \"Status 201, token present, user profile present, redirect to Search screen.\",\n      \"pre_conditions\": \"Email 'new.user@lumastay.app' is not registered.\",\n      \"automatable\": \"yes\",\n      \"pass_field\": \"status_code==201\",\n      \"actual_result\": \"\"\n    },\n    {\n      \"tc_id\": \"TC-002\",\n      \"test_type\": \"Negative\",\n      \"description\": \"Verify registration fails when email already exists.\",\n      \"steps\": \"1. Ensure email 'qa@lumastay.app' is already registered.\\n2. Submit registration form with email 'qa@lumastay.app' and password 'SecurePass123'.\\n3. Verify response status is 409.\\n4. Verify error code is 'AUTH-409'.\\n5. Verify no new user is created.\",\n      \"test_data_format\": \"form_fields\",\n      \"test_data\": \"email=qa@lumastay.app&password=SecurePass123\",\n      \"expected_result\": \"Status 409, error code AUTH-409, no user created.\",\n      \"pre_conditions\": \"Email 'qa@lumastay.app' exists in database.\",\n      \"automatable\": \"yes\",\n      \"pass_field\": \"status_code==409\",\n      \"actual_result\": \"\"\n    },\n    {\n      \"tc_id\": \"TC-003\",\n      \"test_type\": \"Validation\",\n      \"description\":"
+      }
+    }
+  ],
+  "created": 1776818150,
+  "model": "Qwen_Qwen3.5-4B-Q4_K_M.gguf",
+  "system_fingerprint": "b8871-7fc1c4ef7",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 700,
+    "prompt_tokens": 1057,
+    "total_tokens": 1757,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "id": "chatcmpl-4axTtzchTzNcJcnFDMRIxac0ORCFPWmN",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 1057,
+    "prompt_ms": 15855.792,
+    "prompt_per_token_ms": 15.000749290444654,
+    "prompt_per_second": 66.6633366532558,
+    "predicted_n": 700,
+    "predicted_ms": 110399.001,
+    "predicted_per_token_ms": 157.71285857142857,
+    "predicted_per_second": 6.3406370860185595
+  }
+}
