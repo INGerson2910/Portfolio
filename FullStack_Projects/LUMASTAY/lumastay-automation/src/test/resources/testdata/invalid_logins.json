@@ -1,0 +1,6 @@
+[
+  { "email": "notexist@lumastay.app", "password": "Password123!", "expectedError": "Credenciales inválidas" },
+  { "email": "qa@lumastay.app",       "password": "WrongPass999",  "expectedError": "Credenciales inválidas" },
+  { "email": "bad-format",            "password": "Password123!",  "expectedError": "Credenciales inválidas" },
+  { "email": "",                      "password": "",               "expectedError": "Credenciales inválidas" }
+]

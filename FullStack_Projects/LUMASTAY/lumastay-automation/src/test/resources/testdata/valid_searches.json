@@ -1,0 +1,7 @@
+[
+  { "destination": "Ciudad de México", "checkIn": "2026-09-10", "checkOut": "2026-09-13" },
+  { "destination": "Cancún",           "checkIn": "2026-09-15", "checkOut": "2026-09-18" },
+  { "destination": "Madrid",           "checkIn": "2026-10-01", "checkOut": "2026-10-05" },
+  { "destination": "Barcelona",        "checkIn": "2026-10-10", "checkOut": "2026-10-14" },
+  { "destination": "Buenos Aires",     "checkIn": "2026-11-01", "checkOut": "2026-11-04" }
+]

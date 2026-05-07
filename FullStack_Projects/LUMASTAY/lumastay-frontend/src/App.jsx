@@ -1039,14 +1039,14 @@ function ConfirmationView({ t, confirmation, onGoReservations }) {
       <Card className="card-body">
         <div className="confirmation-box">
           {current.icon}
-          <h2>{current.text}</h2>
+          <h2 data-testid="confirmation_status_text">{current.text}</h2>
           <p>
-            Locator: <b>{confirmation.locator}</b>
+            Locator: <b data-testid="confirmation_locator">{confirmation.locator}</b>
           </p>
-          <p>ID: {confirmation.reservationId}</p>
+          <p data-testid="confirmation_reservation_id">ID: {confirmation.reservationId}</p>
         </div>
 
-        <button className="primary-button" onClick={onGoReservations}>
+        <button className="primary-button" onClick={onGoReservations} data-testid="go_to_reservations_button">
           {t.myReservations}
         </button>
       </Card>
@@ -1068,21 +1068,21 @@ function ReservationsView({ t, reservations, onRefresh, token, currency, languag
 
       <div className="results-list">
         {reservations.map((reservation) => (
-          <Card key={reservation.reservationId} className="card-body">
+          <Card key={reservation.reservationId} className="card-body" data-testid={`reservation_card_${reservation.reservationId}`}>
             <h3>{reservation.hotelName}</h3>
             <p>{reservation.roomName}</p>
             <p>
               {reservation.checkIn} → {reservation.checkOut}
             </p>
-            <p>{reservation.status}</p>
+            <p data-testid={`reservation_status_${reservation.reservationId}`}>{reservation.status}</p>
             <p>{formatMoney(reservation.totalAmount, currency || reservation.currency, language)}</p>
 
             {reservation.status !== 'cancelled' ? (
-              <button className="secondary-button" onClick={() => handleCancel(reservation.reservationId)}>
+              <button className="secondary-button" onClick={() => handleCancel(reservation.reservationId)} data-testid={`cancel_reservation_${reservation.reservationId}`}>
                 {t.cancel}
               </button>
             ) : (
-              <p className="success-message">{t.cancelled}</p>
+              <p className="success-message" data-testid={`cancelled_label_${reservation.reservationId}`}>{t.cancelled}</p>
             )}
           </Card>
         ))}
