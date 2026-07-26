@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/server.js",
+    "schema": "node src/db/apply-schema.js",
     "seed": "node src/db/seed.js"
   },
   "dependencies": {
