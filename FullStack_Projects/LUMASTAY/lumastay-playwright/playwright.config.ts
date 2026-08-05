@@ -36,11 +36,12 @@ export default defineConfig({
   projects: [
     {
       name: 'api',
-      testDir: './tests/ui'
+      testDir: './tests/api'
     },
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testDir: './tests/ui'
     }
 
     /* Test against mobile viewports. */

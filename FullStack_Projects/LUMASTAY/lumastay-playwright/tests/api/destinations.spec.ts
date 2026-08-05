@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import type { DestinationResponse } from '../../src/types/lumastay.types';
+import type { DestinationResponse } from '@models/lumastay.types';
 
 test('GET /destinations returns a list of destinations', async ({ request }) => {
   const response = await request.get('/api/v1/destinations');
