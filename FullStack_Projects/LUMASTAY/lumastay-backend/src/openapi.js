@@ -283,10 +283,43 @@ export const openapi = {
           },
           correlationId: { type: "string", example: "6b134561-cdd1-4bfd-9dad-b81817f0d874" }
         }
+      },
+      HealthResponse: {
+        type: "object",
+        required: ["status", "service"],
+        properties: {
+          status: { type: "string", example: "ok" },
+          service: { type: "string", example: "lumastay-backend" }
+        }
       }
     }
   },
   paths: {
+    "/health": {
+      get: {
+        tags: ["Health"],
+        summary: "Check API health",
+        description: "Returns the service health status. This endpoint does not require authorization.",
+        servers: [
+          {
+            url: "http://localhost:4000",
+            description: "Local health endpoint"
+          }
+        ],
+        security: [],
+        responses: {
+          200: {
+            description: "Service is up",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/HealthResponse" },
+                example: { status: "ok", service: "lumastay-backend" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/auth/login": {
       post: {
         tags: ["Auth"],
