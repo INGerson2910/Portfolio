@@ -12,7 +12,6 @@ test('TC-API-009: GET /api/v1/destinations returns unique documented destination
     const response = await request.get('/api/v1/destinations');
 
     expect(response.status()).toBe(200);
-    await expect(response).toBeOK();
 
     const body = await response.json() as { destinations: Destination[] };
     expect(Array.isArray(body.destinations)).toBe(true);
@@ -50,11 +49,10 @@ test('TC-API-010: destinations are ordered by city ascending', {
 }, async ({ request }) => {
     const response = await request.get('/api/v1/destinations');
     expect(response.status()).toBe(200);
-    await expect(response).toBeOK();
 
     const body = await response.json() as { destinations: Destination[] };
     expect(Array.isArray(body.destinations), 'TC-API-010 response must contain a destinations array').toBe(true);
-    expect(body.destinations.length).toBeGreaterThanOrEqual(1);
+    expect(body.destinations.length, 'TC-API-010 requires multiple destinations to verify sorting').toBeGreaterThanOrEqual(2);
 
     const actualCities = body.destinations.map(({ city }) => city);
     const expectedCities = [...actualCities].sort((left, right) => left.localeCompare(right, 'es'));

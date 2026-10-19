@@ -130,6 +130,13 @@ FullStack_Projects/
    │     ├─ utils/
    │     ├─ validators/
    │     └─ openapi.js
+   ├─ lumastay-e2e/
+   │  ├─ package.json
+   │  ├─ playwright.config.ts
+   │  ├─ NOTES.md
+   │  └─ tests/api/
+   │     ├─ health.spec.ts
+   │     └─ destinations.spec.ts
    └─ lumastay-frontend/
       ├─ package.json
       ├─ vite.config.js
@@ -195,6 +202,20 @@ Start the backend:
 ```bash
 npm run dev
 ```
+
+### API / E2E Tests
+
+After PostgreSQL and the backend are running and the database is seeded:
+
+```bash
+cd FullStack_Projects/LUMASTAY/lumastay-e2e
+npm ci
+npm test
+npm run test:api
+npm run report
+```
+
+`API_BASE_URL` defaults to `http://localhost:4000`; `E2E_BASE_URL` defaults to `http://localhost:5173`.
 
 ### Frontend
 

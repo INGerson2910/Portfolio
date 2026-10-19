@@ -7,7 +7,6 @@ test('TC-API-008: GET /health returns the documented healthy response without au
 
     expect(response.status()).toBe(200);
     expect(response.headers()['content-type']).toContain('application/json');
-    await expect(response).toBeOK();
     await expect(response.json()).resolves.toEqual({
         status: 'ok',
         service: 'lumastay-backend',

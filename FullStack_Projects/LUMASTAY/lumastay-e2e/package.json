@@ -1,13 +1,14 @@
 {
   "name": "lumastay-e2e",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Playwright API and end-to-end tests for LumaStay",
   "scripts": {
-    "test:api": "playwright test tests/api --project=api"
+    "test": "playwright test",
+    "test:api": "playwright test tests/api --project=api",
+    "report": "playwright show-report"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["playwright", "api-testing", "e2e"],
+  "author": "Gerson Medina",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
